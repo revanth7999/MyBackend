@@ -3,14 +3,14 @@ package com.backend.MyBackend.dto;
 public class UserDto {
 
     private String username;
-    private String occupation;
+    private String role;
 
     public UserDto() {
     }
 
     public UserDto(String username, String occupation) {
         this.username = username;
-        this.occupation = occupation;
+        this.role = occupation;
     }
 
     public String getUsername() {
@@ -21,12 +21,12 @@ public class UserDto {
         this.username = username;
     }
 
-    public String getoccupation() {
-        return occupation;
+    public String getRole() {
+        return role;
     }
 
-    public void setoccupation(String occupation) {
-        this.occupation = occupation;
+    public void seRole(String occupation) {
+        this.role = occupation;
     }
 
 
