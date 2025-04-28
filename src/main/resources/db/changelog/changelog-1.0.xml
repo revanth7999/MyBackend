@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ChangeSet for inserting new data into CAPTAIN table -->
+    <changeSet id="1" author="Revanth N">
+        <insert tableName="captain">
+            <column name="username" value="captain_01"/>
+            <column name="role" value="admin"/>
+<!--            <column name="password" value="password123"/>-->
+<!--            <column name="is_active" value=true/>-->
+            <column name="created_time_stamp" valueDate="2025-04-28 12:00:00"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
