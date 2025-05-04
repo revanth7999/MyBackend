@@ -1,7 +1,9 @@
 package com.backend.MyBackend.service;
 
+import com.backend.MyBackend.dto.RestaurantDto;
 import com.backend.MyBackend.dto.UserDto;
 import com.backend.MyBackend.modal.User;
+import com.backend.MyBackend.repository.RestaurantRepository;
 import com.backend.MyBackend.repository.UserRepository;
 import com.backend.MyBackend.utils.Utility;
 import jdk.jshell.execution.Util;
@@ -17,6 +19,9 @@ public class HeadService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Autowired
     private Utility utility;
@@ -36,4 +41,13 @@ public class HeadService {
                 new UserDto(user.getUsername(), user.getRole())));
         return allUsers;
     }
+
+    public List<RestaurantDto> getallRestaurants() {
+        List<RestaurantDto> allRestaurants = new ArrayList<>();
+        restaurantRepository.findAll().forEach(res -> allRestaurants.add(
+                new RestaurantDto(res.getName(), res.getCuisine(), res.getIsOpen(), res.getPhone(), res.getRating())));
+        return allRestaurants;
+    }
+
+
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Changeset to insert records into the restaurants table -->
+    <changeSet id="1" author="admin">
+        <insert tableName="restaurants">
+            <column name="id" value="1"/>
+            <column name="name" value="The Great Restaurant"/>
+            <column name="is_open" valueBoolean="true"/>
+            <column name="cuisine" value="Italian"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="Revanth N">
+        <insert tableName="restaurants">
+            <column name="id" value="2"/>
+            <column name="name" value="Spicy Bistro"/>
+            <column name="is_open" valueBoolean="false"/>
+            <column name="cuisine" value="Indian"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="Revanth N">
+        <insert tableName="restaurants">
+            <column name="id" value="3"/>
+            <column name="name" value="Sushi World"/>
+            <column name="is_open" valueBoolean="true"/>
+            <column name="cuisine" value="Japanese"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="Revanth N">
+        <addColumn tableName="restaurants">
+            <column name="phone" type="varchar(15)"/>
+            <column name="rating" type="decimal(2,1)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="5" author="Revanth N">
+        <update tableName="restaurants">
+            <column name="phone" value="123-456-7890"/>
+            <column name="rating" valueNumeric="4.5"/>
+            <where>id = 1</where>
+        </update>
+
+        <update tableName="restaurants">
+            <column name="phone" value="987-654-3210"/>
+            <column name="rating" valueNumeric="4.2"/>
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="restaurants">
+            <column name="phone" value="555-123-4567"/>
+            <column name="rating" valueNumeric="4.8"/>
+            <where>id = 3</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>
