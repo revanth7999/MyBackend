@@ -6,13 +6,11 @@ import com.backend.MyBackend.modal.User;
 import com.backend.MyBackend.repository.RestaurantRepository;
 import com.backend.MyBackend.repository.UserRepository;
 import com.backend.MyBackend.utils.Utility;
-import jdk.jshell.execution.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class HeadService {
@@ -37,17 +35,16 @@ public class HeadService {
 
     public List<UserDto> getAllUsers() {
         List<UserDto> allUsers = new ArrayList<>();
-        userRepository.findAll().forEach(user -> allUsers.add(
-                new UserDto(user.getUsername(), user.getRole())));
+        userRepository.findAll().forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole())));
         return allUsers;
     }
 
     public List<RestaurantDto> getallRestaurants() {
         List<RestaurantDto> allRestaurants = new ArrayList<>();
-        restaurantRepository.findAll().forEach(res -> allRestaurants.add(
-                new RestaurantDto(res.getName(), res.getCuisine(), res.getIsOpen(), res.getPhone(), res.getRating())));
+        restaurantRepository
+                .findAll()
+                .forEach(res -> allRestaurants.add(new RestaurantDto(
+                        res.getName(), res.getCuisine(), res.getIsOpen(), res.getPhone(), res.getRating())));
         return allRestaurants;
     }
-
-
 }

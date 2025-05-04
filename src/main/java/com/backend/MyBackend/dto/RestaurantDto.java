@@ -50,16 +50,13 @@ public class RestaurantDto {
         this.rating = rating;
     }
 
-    public RestaurantDto(){
-    }
+    public RestaurantDto() {}
 
-    public RestaurantDto(String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating){
+    public RestaurantDto(String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;
         this.phone = phone;
         this.rating = rating;
     }
-
-
 }

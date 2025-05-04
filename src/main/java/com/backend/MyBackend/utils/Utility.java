@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Utility {
 
-@Autowired
-private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public String passwordEncrypt(String pass) {
         System.out.println(passwordEncoder.encode(pass));

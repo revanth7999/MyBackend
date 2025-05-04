@@ -19,6 +19,6 @@ public class RestaurantController {
 
     @GetMapping("/allRestaurants")
     public ResponseEntity<ApiResponse> getallRestaurants() {
-        return ResponseEntity.ok(new ApiResponse("Rendered Successfully",headService.getallRestaurants()));
+        return ResponseEntity.ok(new ApiResponse("Rendered Successfully", headService.getallRestaurants()));
     }
 }

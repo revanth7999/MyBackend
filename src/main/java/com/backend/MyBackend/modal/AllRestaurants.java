@@ -1,16 +1,16 @@
 package com.backend.MyBackend.modal;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
 @Entity
-@Table(name= "RESTAURANTS")
+@Table(name = "RESTAURANTS")
 public class AllRestaurants {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String cuisine;
     private Boolean isOpen;
@@ -41,9 +41,8 @@ public class AllRestaurants {
         this.rating = rating;
         this.phone = phone;
     }
-    public AllRestaurants(){
 
-    }
+    public AllRestaurants() {}
 
     // Getters and Setters
     public Long getId() {
@@ -77,5 +76,4 @@ public class AllRestaurants {
     public void setIsOpen(Boolean isOpen) {
         this.isOpen = isOpen;
     }
-
 }

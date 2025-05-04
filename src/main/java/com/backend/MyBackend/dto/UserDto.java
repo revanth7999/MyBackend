@@ -5,8 +5,7 @@ public class UserDto {
     private String username;
     private String role;
 
-    public UserDto() {
-    }
+    public UserDto() {}
 
     public UserDto(String username, String occupation) {
         this.username = username;
@@ -28,6 +27,4 @@ public class UserDto {
     public void seRole(String occupation) {
         this.role = occupation;
     }
-
-
 }

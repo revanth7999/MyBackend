@@ -1,17 +1,16 @@
 package com.backend.MyBackend.modal;
 
-import com.backend.MyBackend.enums.Status;
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 
 @Entity
-@Table(name= "CAPTAIN")
+@Table(name = "CAPTAIN")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String role;
     private String Password;
@@ -42,7 +41,6 @@ public class User {
         this.username = username;
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -50,7 +48,6 @@ public class User {
     public String getPassword() {
         return Password;
     }
-
 
     public String getRole() {
         return role;
@@ -69,9 +66,5 @@ public class User {
         this.isActive = isActive;
     }
 
-    public User(){
-
-    }
-
-
+    public User() {}
 }

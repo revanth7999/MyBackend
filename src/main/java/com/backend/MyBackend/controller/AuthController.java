@@ -21,15 +21,14 @@ public class AuthController {
     public ResponseEntity<ApiResponse> register(@RequestBody User user) {
         try {
             UserDto userDTO = headService.register(user);
-            return ResponseEntity.ok(new ApiResponse(user.getUsername() + " is created successfully",userDTO));
+            return ResponseEntity.ok(new ApiResponse(user.getUsername() + " is created successfully", userDTO));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
     @GetMapping("/allUsers")
     public ResponseEntity<ApiResponse> getAllUsers() {
-        return ResponseEntity.ok(new ApiResponse("Rendered Successfully",headService.getAllUsers()));
+        return ResponseEntity.ok(new ApiResponse("Rendered Successfully", headService.getAllUsers()));
     }
 }
