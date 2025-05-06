@@ -28,15 +28,17 @@ public class HeadService {
     public UserDto register(User user) {
         user.setPassword(utility.passwordEncrypt(user.getPassword()));
         user.setRole(user.getRole());
-        user.setIsActive(user.getIsActive());
+        user.setis_active(user.getis_active());
         user.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
-        return new UserDto(user.getUsername(), user.getRole());
+        return new UserDto(user.getUsername(), user.getRole(), user.getis_active());
     }
 
     public List<UserDto> getAllUsers() {
         List<UserDto> allUsers = new ArrayList<>();
-        userRepository.findAll().forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole())));
+        userRepository
+                .findAll()
+                .forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active())));
         return allUsers;
     }
 
@@ -50,7 +52,8 @@ public class HeadService {
                         res.getIsOpen(),
                         res.getPhone(),
                         res.getRating(),
-                        res.getAddress())));
+                        res.getAddress(),
+                        res.getDishes())));
         return allRestaurants;
     }
 
@@ -59,6 +62,6 @@ public class HeadService {
         if (user == null || !utility.passwordMatches(rawPassword, user.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
-        return new LoginRequest(user.getUsername(), user.getRole());
+        return new LoginRequest(user.getUsername(), user.getRole(), "");
     }
 }

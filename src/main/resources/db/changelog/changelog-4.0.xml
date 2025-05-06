@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+<changeSet id="add-dish-datas" author="Revanth N">
+    <update tableName="restaurants">
+        <column name="dish_name" value="Pasta"/>
+        <column name="price" valueNumeric="250"/>
+        <column name="description" value="Creamy Alfredo pasta with herbs"/>
+        <where>id = 1</where>
+    </update>
+
+    <update tableName="restaurants">
+        <column name="dish_name" value="Pizza"/>
+        <column name="price" valueNumeric="300"/>
+        <column name="description" value="Cheese burst pizza with toppings"/>
+        <where>id = 2</where>
+    </update>
+
+    <update tableName="restaurants">
+        <column name="dish_name" value="Burger"/>
+        <column name="price" valueNumeric="150"/>
+        <column name="description" value="Veg burger with fries"/>
+        <where>id = 3</where>
+    </update>
+
+    <rollback>
+        <update tableName="restaurants">
+            <column name="dish_name" value=""/>
+            <column name="price" valueNumeric="0"/>
+            <column name="description" value=""/>
+            <where>id IN (1, 2, 3)</where>
+        </update>
+    </rollback>
+</changeSet>
+
+</databaseChangeLog>

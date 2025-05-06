@@ -1,6 +1,7 @@
 package com.backend.MyBackend.controller;
 
 import com.backend.MyBackend.Constants;
+import com.backend.MyBackend.config.JwtUtil;
 import com.backend.MyBackend.dto.ApiResponse;
 import com.backend.MyBackend.dto.LoginRequest;
 import com.backend.MyBackend.dto.UserDto;
@@ -33,6 +34,8 @@ public class AuthController {
     public ResponseEntity<ApiResponse> login(@RequestBody User user) {
         try {
             LoginRequest loginRequest = headService.login(user.getUsername(), user.getPassword());
+            String token = JwtUtil.generateToken(user.getUsername());
+            loginRequest.setToken(token); // Add token to the response DTO
             return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS, loginRequest));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(), null));

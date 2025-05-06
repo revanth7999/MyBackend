@@ -2,6 +2,8 @@ package com.backend.MyBackend.modal;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "RESTAURANTS")
@@ -28,6 +30,19 @@ public class AllRestaurants {
         this.address = address;
     }
 
+    @ElementCollection
+    @CollectionTable(name = "restaurant_dishes", joinColumns = @JoinColumn(name = "restaurant_id"))
+    private List<Dishes> dishes = new ArrayList<>();
+
+    public List<Dishes> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dishes> dishes) {
+        this.dishes = dishes;
+    }
+
+
     public BigDecimal getRating() {
         return rating;
     }
@@ -46,13 +61,14 @@ public class AllRestaurants {
 
     // Constructors
     public AllRestaurants(
-            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address) {
+            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address, List<Dishes> dishes) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;
         this.rating = rating;
         this.phone = phone;
         this.address = address;
+        this.dishes = dishes;
     }
 
     public AllRestaurants() {}

@@ -4,12 +4,22 @@ public class UserDto {
 
     private String username;
     private String role;
+    private Boolean is_active;
 
     public UserDto() {}
 
-    public UserDto(String username, String occupation) {
+    public Boolean getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(Boolean is_active) {
+        this.is_active = is_active;
+    }
+
+    public UserDto(String username, String occupation, Boolean is_active) {
         this.username = username;
         this.role = occupation;
+        this.is_active = is_active;
     }
 
     public String getUsername() {

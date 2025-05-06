@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="insert-dishes-001" author="Revanth N">
+        <insert tableName="restaurant_dishes">
+            <column name="restaurant_id" valueNumeric="1"/>
+            <column name="dish_name" value="Pasta"/>
+            <column name="description" value="Creamy Alfredo pasta with herbs"/>
+            <column name="price" valueNumeric="250"/>
+        </insert>
+
+        <insert tableName="restaurant_dishes">
+            <column name="restaurant_id" valueNumeric="2"/>
+            <column name="dish_name" value="Pizza"/>
+            <column name="description" value="Cheese burst pizza with toppings"/>
+            <column name="price" valueNumeric="300"/>
+        </insert>
+
+        <insert tableName="restaurant_dishes">
+            <column name="restaurant_id" valueNumeric="3"/>
+            <column name="dish_name" value="Burger"/>
+            <column name="description" value="Veg burger with fries"/>
+            <column name="price" valueNumeric="150"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

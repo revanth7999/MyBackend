@@ -14,7 +14,7 @@ public class User {
     private String username;
     private String role;
     private String Password;
-    private Boolean isActive;
+    private Boolean is_active;
     private Timestamp created_time_stamp;
 
     public Timestamp getCreated_time_stamp() {
@@ -25,12 +25,12 @@ public class User {
         this.created_time_stamp = created_time_stamp;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Boolean getis_active() {
+        return is_active;
     }
 
-    public void setIsActive(Boolean active) {
-        isActive = active;
+    public void setis_active(Boolean active) {
+        is_active = active;
     }
 
     public void setPassword(String password) {
@@ -57,13 +57,13 @@ public class User {
         this.role = role;
     }
 
-    public User(Long id, String password, String username, String role, Timestamp createdTimeStamp, Boolean isActive) {
+    public User(Long id, String password, String username, String role, Timestamp createdTimeStamp, Boolean is_active) {
         this.id = id;
         this.Password = password;
         this.username = username;
         this.role = role;
         this.created_time_stamp = createdTimeStamp;
-        this.isActive = isActive;
+        this.is_active = is_active;
     }
 
     public User() {}
