@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="update-address-existing-data" author="Revanth N">
+        <update tableName="restaurants">
+            <column name="street" value="123 Main St"/>
+            <column name="city" value="Springfield"/>
+            <column name="state" value="IL"/>
+            <column name="zipcode" value="62701"/>
+            <where>id = 1</where>
+        </update>
+
+        <update tableName="restaurants">
+            <column name="street" value="456 Oak Ave"/>
+            <column name="city" value="Metropolis"/>
+            <column name="state" value="NY"/>
+            <column name="zipcode" value="10001"/>
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="restaurants">
+            <column name="street" value="789 Elm Rd"/>
+            <column name="city" value="Gotham"/>
+            <column name="state" value="NJ"/>
+            <column name="zipcode" value="07001"/>
+            <where>id = 3</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>
+

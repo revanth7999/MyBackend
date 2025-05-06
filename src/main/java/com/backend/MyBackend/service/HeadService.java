@@ -1,5 +1,6 @@
 package com.backend.MyBackend.service;
 
+import com.backend.MyBackend.dto.LoginRequest;
 import com.backend.MyBackend.dto.RestaurantDto;
 import com.backend.MyBackend.dto.UserDto;
 import com.backend.MyBackend.modal.User;
@@ -44,7 +45,20 @@ public class HeadService {
         restaurantRepository
                 .findAll()
                 .forEach(res -> allRestaurants.add(new RestaurantDto(
-                        res.getName(), res.getCuisine(), res.getIsOpen(), res.getPhone(), res.getRating())));
+                        res.getName(),
+                        res.getCuisine(),
+                        res.getIsOpen(),
+                        res.getPhone(),
+                        res.getRating(),
+                        res.getAddress())));
         return allRestaurants;
+    }
+
+    public LoginRequest login(String username, String rawPassword) {
+        User user = userRepository.findByUsername(username);
+        if (user == null || !utility.passwordMatches(rawPassword, user.getPassword())) {
+            throw new RuntimeException("Invalid username or password");
+        }
+        return new LoginRequest(user.getUsername(), user.getRole());
     }
 }

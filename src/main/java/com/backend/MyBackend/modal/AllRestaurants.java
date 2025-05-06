@@ -17,6 +17,17 @@ public class AllRestaurants {
     private String phone;
     private BigDecimal rating;
 
+    @Embedded
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public BigDecimal getRating() {
         return rating;
     }
@@ -34,12 +45,14 @@ public class AllRestaurants {
     }
 
     // Constructors
-    public AllRestaurants(String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating) {
+    public AllRestaurants(
+            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;
         this.rating = rating;
         this.phone = phone;
+        this.address = address;
     }
 
     public AllRestaurants() {}

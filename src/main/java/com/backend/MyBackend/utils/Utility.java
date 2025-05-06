@@ -11,7 +11,10 @@ public class Utility {
     private PasswordEncoder passwordEncoder;
 
     public String passwordEncrypt(String pass) {
-        System.out.println(passwordEncoder.encode(pass));
         return passwordEncoder.encode(pass);
+    }
+
+    public boolean passwordMatches(String rawPassword, String hashedPassword) {
+        return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 }

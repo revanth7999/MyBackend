@@ -1,5 +1,6 @@
 package com.backend.MyBackend.dto;
 
+import com.backend.MyBackend.modal.Address;
 import java.math.BigDecimal;
 
 public class RestaurantDto {
@@ -9,6 +10,15 @@ public class RestaurantDto {
     private Boolean isOpen;
     private String phone;
     private BigDecimal rating;
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public String getName() {
         return name;
@@ -52,11 +62,13 @@ public class RestaurantDto {
 
     public RestaurantDto() {}
 
-    public RestaurantDto(String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating) {
+    public RestaurantDto(
+            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;
         this.phone = phone;
         this.rating = rating;
+        this.address = address;
     }
 }

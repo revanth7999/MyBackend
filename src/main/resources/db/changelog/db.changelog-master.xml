@@ -9,6 +9,7 @@
     <!-- Reference individual change logs here -->
     <include file="db/changelog/changelog-1.0.xml"/>
     <include file="db/changelog/changelog-2.0.xml"/>
+    <include file="db/changelog/changelog-3.0.xml"/>
 
 
 </databaseChangeLog>

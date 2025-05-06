@@ -23,6 +23,10 @@ public class SecurityConfig {
                                 .permitAll() // Public endpoints
                                 .requestMatchers("/restaurant/allRestaurants**")
                                 .permitAll()
+                                .requestMatchers("/dev/login**")
+                                .permitAll()
+                                .requestMatchers("/dev/allUsers**")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated() // All other endpoints require authentication
                         )

@@ -1,6 +1,8 @@
 package com.backend.MyBackend.controller;
 
+import com.backend.MyBackend.Constants;
 import com.backend.MyBackend.dto.ApiResponse;
+import com.backend.MyBackend.dto.LoginRequest;
 import com.backend.MyBackend.dto.UserDto;
 import com.backend.MyBackend.modal.User;
 import com.backend.MyBackend.service.HeadService;
@@ -21,7 +23,17 @@ public class AuthController {
     public ResponseEntity<ApiResponse> register(@RequestBody User user) {
         try {
             UserDto userDTO = headService.register(user);
-            return ResponseEntity.ok(new ApiResponse(user.getUsername() + " is created successfully", userDTO));
+            return ResponseEntity.ok(new ApiResponse(user.getUsername() + Constants.USER_REGISTER_SUCCESS, userDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> login(@RequestBody User user) {
+        try {
+            LoginRequest loginRequest = headService.login(user.getUsername(), user.getPassword());
+            return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS, loginRequest));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(), null));
         }
