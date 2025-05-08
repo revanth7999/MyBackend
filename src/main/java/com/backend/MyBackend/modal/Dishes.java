@@ -14,8 +14,7 @@ public class Dishes {
         this.price = price;
     }
 
-    public Dishes() {
-    }
+    public Dishes() {}
 
     public String getDishName() {
         return dishName;

@@ -1,5 +1,7 @@
 package com.backend.MyBackend.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +27,7 @@ public class SecurityConfig {
         http.cors(withDefaults());
         http.csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(
-                                        "/dev/login")
+                        auth -> auth.requestMatchers("/dev/login")
                                 .permitAll() // Public endpoints
                                 .anyRequest()
                                 .authenticated() // All other endpoints require authentication
@@ -49,3 +48,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(); // For hashing passwords securely
     }
 }
+
+// For Understanding;
+// @Configuration: Tells Spring this class contains configuration code.
+// @EnableWebSecurity: Enables Spring Security’s web security support.
+// @EnableMethodSecurity: Allows security annotations like @PreAuthorize at the method level.

@@ -10,6 +10,7 @@ import com.backend.MyBackend.service.HeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,7 +35,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse> login(@RequestBody User user) {
         try {
             LoginRequest loginRequest = headService.login(user.getUsername(), user.getPassword());
-            String token = JwtUtil.generateToken(user.getUsername());
+            String token = JwtUtil.generateToken(user.getUsername(), loginRequest.getRole());
             loginRequest.setToken(token); // Add token to the response DTO
             return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS, loginRequest));
         } catch (Exception e) {
@@ -43,6 +44,7 @@ public class AuthController {
     }
 
     @GetMapping("/allUsers")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getAllUsers() {
         return ResponseEntity.ok(new ApiResponse("Rendered Successfully", headService.getAllUsers()));
     }

@@ -2,7 +2,6 @@ package com.backend.MyBackend.dto;
 
 import com.backend.MyBackend.modal.Address;
 import com.backend.MyBackend.modal.Dishes;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -75,7 +74,13 @@ public class RestaurantDto {
     public RestaurantDto() {}
 
     public RestaurantDto(
-            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address, List<Dishes> dishes) {
+            String name,
+            String cuisine,
+            Boolean isOpen,
+            String phone,
+            BigDecimal rating,
+            Address address,
+            List<Dishes> dishes) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;

@@ -42,7 +42,6 @@ public class AllRestaurants {
         this.dishes = dishes;
     }
 
-
     public BigDecimal getRating() {
         return rating;
     }
@@ -61,7 +60,13 @@ public class AllRestaurants {
 
     // Constructors
     public AllRestaurants(
-            String name, String cuisine, Boolean isOpen, String phone, BigDecimal rating, Address address, List<Dishes> dishes) {
+            String name,
+            String cuisine,
+            Boolean isOpen,
+            String phone,
+            BigDecimal rating,
+            Address address,
+            List<Dishes> dishes) {
         this.name = name;
         this.cuisine = cuisine;
         this.isOpen = isOpen;
