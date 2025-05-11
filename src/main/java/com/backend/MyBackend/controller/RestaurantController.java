@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/dev/restaurant")
 @CrossOrigin(origins = "*")
 public class RestaurantController {
 

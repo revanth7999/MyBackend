@@ -2,9 +2,12 @@ package com.backend.MyBackend.service;
 
 import com.backend.MyBackend.dto.LoginRequest;
 import com.backend.MyBackend.dto.RestaurantDto;
+import com.backend.MyBackend.dto.RolesDto;
 import com.backend.MyBackend.dto.UserDto;
+import com.backend.MyBackend.modal.Roles;
 import com.backend.MyBackend.modal.User;
 import com.backend.MyBackend.repository.RestaurantRepository;
+import com.backend.MyBackend.repository.RolesRepository;
 import com.backend.MyBackend.repository.UserRepository;
 import com.backend.MyBackend.utils.Utility;
 import java.sql.Timestamp;
@@ -23,6 +26,9 @@ public class HeadService {
     private RestaurantRepository restaurantRepository;
 
     @Autowired
+    private RolesRepository rolesRepository;
+
+    @Autowired
     private Utility utility;
 
     public UserDto register(User user) {
@@ -31,15 +37,29 @@ public class HeadService {
         user.setis_active(user.getis_active());
         user.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
-        return new UserDto(user.getUsername(), user.getRole(), user.getis_active());
+        return new UserDto(user.getUsername(), user.getRole(), user.getis_active(), "");
+    }
+
+    public RolesDto adminRegisterUser(Roles role) {
+        role.setRoles(role.getRoles());
+        rolesRepository.save(role);
+        return new RolesDto(role.getRoles());
     }
 
     public List<UserDto> getAllUsers() {
         List<UserDto> allUsers = new ArrayList<>();
         userRepository
                 .findAll()
-                .forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active())));
+                .forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active(),"")));
         return allUsers;
+    }
+
+    public List<RolesDto> getAllRoles() {
+        List<RolesDto> allRoles = new ArrayList<>();
+        rolesRepository
+                .findAll()
+                .forEach(role -> allRoles.add(new RolesDto(role.getRoles())));
+        return allRoles;
     }
 
     public List<RestaurantDto> getallRestaurants() {

@@ -27,7 +27,7 @@ public class SecurityConfig {
         http.cors(withDefaults());
         http.csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/dev/login")
+                        auth -> auth.requestMatchers("/dev/login", "/dev/register")
                                 .permitAll() // Public endpoints
                                 .anyRequest()
                                 .authenticated() // All other endpoints require authentication
