@@ -13,6 +13,10 @@
     <include file="db/changelog/changelog-4.0.xml"/>
     <include file="db/changelog/changelog-5.0.xml"/>
     <include file="db/changelog/changelog-6.0.xml"/>
+    <include file="db/changelog/changelog-7.0.xml"/>
+
+    <!-- Triggers -->
+    <include file="db/triggers/create-insert-admin-user-trigger.xml"/>
 
 
 </databaseChangeLog>

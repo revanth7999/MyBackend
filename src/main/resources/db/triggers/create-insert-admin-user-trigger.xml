@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="create-insert-admin-user-trigger" author="revanth" dbms="mysql">
+        <sql splitStatements="false" stripComments="true">
+            <![CDATA[
+                CREATE TRIGGER insert_admin_user
+                AFTER INSERT ON captain
+                FOR EACH ROW
+                BEGIN
+                    IF NEW.role = 'ADMIN' THEN
+                        INSERT INTO admin_users (id, username, created_at)
+                        VALUES (NEW.id, NEW.username, NOW());
+                    END IF;
+                END;
+            ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
