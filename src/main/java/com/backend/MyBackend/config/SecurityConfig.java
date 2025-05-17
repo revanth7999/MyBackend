@@ -22,22 +22,22 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
 
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(withDefaults());
-        http.csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
-                .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/dev/login", "/dev/register")
-                                .permitAll() // Public endpoints
-                                .anyRequest()
-                                .authenticated() // All other endpoints require authentication
-                        )
-                .sessionManagement(
-                        session ->
-                                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions; JWT only
-                        );
 
-        // Add JWT filter before the built-in username/password auth filter
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(
+                        auth -> auth.requestMatchers("/dev/login", "/dev/register", "/oauth2/**", "/login/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+                .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -45,11 +45,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // For hashing passwords securely
+        return new BCryptPasswordEncoder();
     }
 }
-
-// For Understanding;
-// @Configuration: Tells Spring this class contains configuration code.
-// @EnableWebSecurity: Enables Spring Security’s web security support.
-// @EnableMethodSecurity: Allows security annotations like @PreAuthorize at the method level.

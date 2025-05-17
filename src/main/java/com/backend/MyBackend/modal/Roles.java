@@ -33,6 +33,5 @@ public class Roles {
         this.roles = roles;
     }
 
-    public Roles() {
-    }
+    public Roles() {}
 }

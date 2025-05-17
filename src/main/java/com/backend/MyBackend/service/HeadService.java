@@ -50,15 +50,14 @@ public class HeadService {
         List<UserDto> allUsers = new ArrayList<>();
         userRepository
                 .findAll()
-                .forEach(user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active(),"")));
+                .forEach(
+                        user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active(), "")));
         return allUsers;
     }
 
     public List<RolesDto> getAllRoles() {
         List<RolesDto> allRoles = new ArrayList<>();
-        rolesRepository
-                .findAll()
-                .forEach(role -> allRoles.add(new RolesDto(role.getRoles())));
+        rolesRepository.findAll().forEach(role -> allRoles.add(new RolesDto(role.getRoles())));
         return allRoles;
     }
 

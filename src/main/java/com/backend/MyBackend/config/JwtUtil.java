@@ -8,8 +8,10 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class JwtUtil {
     private static final Key SECRET_KEY =
             Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use a securely stored key in production

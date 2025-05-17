@@ -11,8 +11,7 @@ public class RolesDto {
         this.roles = roles;
     }
 
-    public RolesDto() {
-    }
+    public RolesDto() {}
 
     public RolesDto(String roles) {
         this.roles = roles;
