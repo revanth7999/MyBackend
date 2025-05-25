@@ -4,6 +4,7 @@ public class LoginRequest {
     private String username;
     private String role;
     private String token;
+    private String refreshToken;
 
     public String getToken() {
         return token;
@@ -29,10 +30,19 @@ public class LoginRequest {
         this.role = role;
     }
 
-    public LoginRequest(String username, String role, String token) {
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public LoginRequest(String username, String role, String token, String refreshToken) {
         this.username = username;
         this.role = role;
         this.token = token;
+        this.refreshToken = refreshToken;
     }
 
     public LoginRequest() {}

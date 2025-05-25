@@ -28,6 +28,18 @@ public class JwtUtil {
                 .compact();
     }
 
+    public static String generateRefreshToken(String subject) {
+        long now = System.currentTimeMillis();
+        long refreshExpiration = 7 * 24 * 60 * 60 * 1000; // 7 days
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + refreshExpiration))
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
+
     public static boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);

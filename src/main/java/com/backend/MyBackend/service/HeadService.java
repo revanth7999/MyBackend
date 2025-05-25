@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -81,6 +82,14 @@ public class HeadService {
         if (user == null || !utility.passwordMatches(rawPassword, user.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
-        return new LoginRequest(user.getUsername(), user.getRole(), "");
+        return new LoginRequest(user.getUsername(), user.getRole(), "", "");
+    }
+
+    public String getRoleForUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+        return user.getRole();
     }
 }
