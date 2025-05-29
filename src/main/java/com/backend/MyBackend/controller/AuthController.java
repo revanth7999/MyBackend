@@ -79,7 +79,7 @@ public class AuthController {
     public ResponseEntity<?> refreshToken(@CookieValue("refresh_token") String refreshToken) {
         if (JwtUtil.validateToken(refreshToken)) {
             String username = JwtUtil.getUsernameFromToken(refreshToken);
-            String role = headService.getRoleForUser(username); // <-- Add this method in HeadService
+            String role = headService.getRoleForUser(username);
             String newAccessToken = JwtUtil.generateToken(username, role);
             return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
         } else {
