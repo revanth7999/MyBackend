@@ -91,13 +91,20 @@ public class AuthController {
     public ResponseEntity<?> logout() {
         ResponseCookie deleteCookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
-                .secure(true)
-                .path("/dev/auth/refresh")
+                .secure(false)
+                .path("/")
                 .maxAge(0)
                 .build();
-
+        // Delete JSESSIONID cookie
+        ResponseCookie deleteSessionCookie = ResponseCookie.from("JSESSIONID", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, deleteSessionCookie.toString())
                 .body("Logged out successfully");
     }
 
