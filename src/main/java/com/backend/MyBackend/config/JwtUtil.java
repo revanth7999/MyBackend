@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
     private static final Key SECRET_KEY =
             Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use a securely stored key in production
-    private static final long EXPIRATION_MILLIS = 5 * 1000; // 1 minute
+    private static final long EXPIRATION_MILLIS = 15 * 60 * 1000; // 15 minutes
 
     public static String generateToken(String subject, String role) {
         long now = System.currentTimeMillis();
