@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 @Component
-public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler{
 
     @Autowired
     private final JwtUtil jwtUtil;
@@ -22,14 +22,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private UserRepository userRepository;
 
-    public OAuth2LoginSuccessHandler(JwtUtil jwtUtil) {
+    public OAuth2LoginSuccessHandler(JwtUtil jwtUtil){
         this.jwtUtil = jwtUtil;
     }
 
     @Override
     public void onAuthenticationSuccess(
-            HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+            HttpServletRequest request,HttpServletResponse response,Authentication authentication)
+            throws IOException, ServletException{
 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         System.out.println(oAuth2User);
@@ -40,9 +40,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         Optional<User> existingUser = Optional.ofNullable(userRepository.findByUsername(username));
 
         User user;
-        if (existingUser.isPresent()) {
+        if (existingUser.isPresent()){
             user = existingUser.get();
-        } else {
+        } else{
             // Register new user
             user = new User();
             user.setUsername(oAuth2User.getAttribute("login")); // or name/email
@@ -51,7 +51,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         // Generate your JWT
-        String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+        String token = jwtUtil.generateToken(user.getUsername(),user.getRole());
         System.out.println("token ::: " + token);
 
         // Send JWT to frontend (redirect with token, or return as JSON)

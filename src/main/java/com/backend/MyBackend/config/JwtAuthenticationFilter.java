@@ -15,22 +15,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain)
+            throws ServletException, IOException{
 
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")){
             String token = authHeader.substring(7); // Remove "Bearer "
 
-            if (JwtUtil.validateToken(token)) {
+            if (JwtUtil.validateToken(token)){
                 String username = JwtUtil.getUsernameFromToken(token);
 
                 // Extract roles from token
                 Claims claims = JwtUtil.getAllClaimsFromToken(token);
-                List<String> roles = claims.get("roles", List.class);
+                List<String> roles = claims.get("roles",List.class);
 
                 // Convert roles to Spring authorities
                 List<SimpleGrantedAuthority> authorities = roles.stream()
@@ -38,14 +38,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .collect(Collectors.toList());
 
                 // Set authentication manually
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(username, null, authorities);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
+                        null,authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } else {
+        } else{
             logger.error("No valid Authorization header found.");
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request,response);
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HeadService {
+public class HeadService{
 
     @Autowired
     private UserRepository userRepository;
@@ -32,37 +32,37 @@ public class HeadService {
     @Autowired
     private Utility utility;
 
-    public UserDto register(User user) {
+    public UserDto register(User user){
         user.setPassword(utility.passwordEncrypt(user.getPassword()));
         user.setRole(user.getRole());
         user.setis_active(user.getis_active());
         user.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
-        return new UserDto(user.getUsername(), user.getRole(), user.getis_active(), "");
+        return new UserDto(user.getUsername(),user.getRole(),user.getis_active(),"");
     }
 
-    public RolesDto adminRegisterUser(Roles role) {
+    public RolesDto adminRegisterUser(Roles role){
         role.setRoles(role.getRoles());
         rolesRepository.save(role);
         return new RolesDto(role.getRoles());
     }
 
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> getAllUsers(){
         List<UserDto> allUsers = new ArrayList<>();
         userRepository
                 .findAll()
                 .forEach(
-                        user -> allUsers.add(new UserDto(user.getUsername(), user.getRole(), user.getis_active(), "")));
+                        user -> allUsers.add(new UserDto(user.getUsername(),user.getRole(),user.getis_active(),"")));
         return allUsers;
     }
 
-    public List<RolesDto> getAllRoles() {
+    public List<RolesDto> getAllRoles(){
         List<RolesDto> allRoles = new ArrayList<>();
         rolesRepository.findAll().forEach(role -> allRoles.add(new RolesDto(role.getRoles())));
         return allRoles;
     }
 
-    public List<RestaurantDto> getallRestaurants() {
+    public List<RestaurantDto> getallRestaurants(){
         List<RestaurantDto> allRestaurants = new ArrayList<>();
         restaurantRepository
                 .findAll()
@@ -77,17 +77,17 @@ public class HeadService {
         return allRestaurants;
     }
 
-    public LoginRequest login(String username, String rawPassword) {
+    public LoginRequest login(String username,String rawPassword){
         User user = userRepository.findByUsername(username);
-        if (user == null || !utility.passwordMatches(rawPassword, user.getPassword())) {
+        if (user == null || !utility.passwordMatches(rawPassword,user.getPassword())){
             throw new RuntimeException("Invalid username or password");
         }
-        return new LoginRequest(user.getUsername(), user.getRole(), "", "");
+        return new LoginRequest(user.getUsername(),user.getRole(),"","");
     }
 
-    public String getRoleForUser(String username) {
+    public String getRoleForUser(String username){
         User user = userRepository.findByUsername(username);
-        if (user == null) {
+        if (user == null){
             throw new UsernameNotFoundException("User not found: " + username);
         }
         return user.getRole();

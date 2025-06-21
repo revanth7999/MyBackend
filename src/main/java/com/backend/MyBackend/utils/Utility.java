@@ -5,16 +5,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Utility {
+public class Utility{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String passwordEncrypt(String pass) {
+    public String passwordEncrypt(String pass){
         return passwordEncoder.encode(pass);
     }
 
-    public boolean passwordMatches(String rawPassword, String hashedPassword) {
-        return passwordEncoder.matches(rawPassword, hashedPassword);
+    public boolean passwordMatches(String rawPassword,String hashedPassword){
+        return passwordEncoder.matches(rawPassword,hashedPassword);
     }
 }

@@ -12,23 +12,23 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class JwtUtil {
-    private static final Key SECRET_KEY =
-            Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use a securely stored key in production
+public class JwtUtil{
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use a securely stored key in
+    // production
     private static final long EXPIRATION_MILLIS = 15 * 60 * 1000; // 15 minutes
 
-    public static String generateToken(String subject, String role) {
+    public static String generateToken(String subject,String role){
         long now = System.currentTimeMillis();
         return Jwts.builder()
                 .setSubject(subject)
-                .claim("roles", List.of(role)) // <- Add roles here
+                .claim("roles",List.of(role)) // <- Add roles here
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + EXPIRATION_MILLIS))
                 .signWith(SECRET_KEY)
                 .compact();
     }
 
-    public static String generateRefreshToken(String subject) {
+    public static String generateRefreshToken(String subject){
         long now = System.currentTimeMillis();
         long refreshExpiration = 7 * 24 * 60 * 60 * 1000; // 7 days
         return Jwts.builder()
@@ -39,18 +39,17 @@ public class JwtUtil {
                 .compact();
     }
 
-
-    public static boolean validateToken(String token) {
-        try {
+    public static boolean validateToken(String token){
+        try{
             Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            log.error("Token validation failed: {}", e.getMessage());
+        } catch (Exception e){
+            log.error("Token validation failed: {}",e.getMessage());
             return false; // Token is invalid or expired
         }
     }
 
-    public static String getUsernameFromToken(String token) {
+    public static String getUsernameFromToken(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
@@ -59,7 +58,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public static Claims getAllClaimsFromToken(String token) {
+    public static Claims getAllClaimsFromToken(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()

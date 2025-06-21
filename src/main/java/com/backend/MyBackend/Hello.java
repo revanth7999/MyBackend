@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class Hello {
+public class Hello{
 
     @RequestMapping("/")
-    public String greet() {
+    public String greet(){
         return "Hello World!";
     }
 }

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/dev/restaurant")
 @CrossOrigin(origins = "*")
-public class RestaurantController {
+public class RestaurantController{
 
     @Autowired
     private HeadService headService;
 
     @GetMapping("/allRestaurants")
-    public ResponseEntity<ApiResponse> getallRestaurants() {
-        return ResponseEntity.ok(new ApiResponse("Rendered Successfully", headService.getallRestaurants()));
+    public ResponseEntity<ApiResponse> getallRestaurants(){
+        return ResponseEntity.ok(new ApiResponse("Rendered Successfully",headService.getallRestaurants()));
     }
 }

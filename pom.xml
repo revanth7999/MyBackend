@@ -129,13 +129,8 @@
                         <trimTrailingWhitespace/>
                         <endWithNewline/>
                         <eclipse>
-                            <file>config/eclipse-java-style.epf</file>
+                            <file>config/eclipse-java-style.xml</file>
                         </eclipse>
-                        <indent>
-                            <tabs>true</tabs>
-                            <spacesPerTab>4</spacesPerTab>
-                        </indent>
-                        <palantirJavaFormat/>
                     </java>
                 </configuration>
             </plugin>
