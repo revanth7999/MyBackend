@@ -5,6 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <changeSet id="create-roles-table" author="Revanth N">
+        <createTable tableName="roles">
+            <column name="id" type="INT" autoIncrement="true"/>
+            <column name="roles" type="VARCHAR(255)" />
+        </createTable>
+    </changeSet>
+
     <changeSet id="insert-roles" author="Revanth N">
         <insert tableName="roles">
             <column name="roles" value="ADMIN"/>

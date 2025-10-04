@@ -54,7 +54,7 @@ public class AuthController{
             refreshTokenCookie.setPath("/"); // cookie valid for entire domain
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // e.g. 7 days expiry
 
-            response.addCookie(refreshTokenCookie);
+            response.addCookie(refreshTokenCookie); 
 
             return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS,loginRequest));
         } catch (Exception e){
