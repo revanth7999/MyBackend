@@ -1,44 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
+        <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.backend</groupId>
     <artifactId>MyBackend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>MyBackend</name>
     <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>
         <license/>
     </licenses>
+
     <developers>
-        <developer/>
+      <developer>
+        <id>revanth7999</id>
+        <name>Revanth N</name>
+        <url>https://github.com/revanth7999</url>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
     </developers>
+
     <scm>
         <connection/>
         <developerConnection/>
         <tag/>
         <url/>
     </scm>
+
     <properties>
         <java.version>17</java.version>
+        <spotless.version>2.32.0</spotless.version>
+        <tidy.version>1.2.0</tidy.version>
+        <!-- Define the directory for Spotless to format Java files -->
+        <spotless.config.dir>src/main/java/**/*.java</spotless.config.dir>
+        <!-- Define the Liquibase properties file location -->
+        <liquibase.config.dir>bin/liquibase.properties</liquibase.config.dir>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -59,26 +81,23 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.diffplug.spotless/spotless-maven-plugin -->
-        <dependency>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.44.4</version>
-        </dependency>
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.11.5</version>
         </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.11.5</version>
         </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if you prefer -->
+            <artifactId>jjwt-jackson</artifactId>
+            <!-- or jjwt-gson if you prefer -->
             <version>0.11.5</version>
         </dependency>
 
@@ -86,6 +105,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -103,9 +123,6 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
 
-
-
-
     </dependencies>
 
     <build>
@@ -115,13 +132,36 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tidy-maven-plugin</artifactId>
+                <version>${tidy.version}</version>
+                <executions>
+                    <execution>
+                        <id>tidy-pom</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>pom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <executions>
+                    <execution>
+                        <id>spotless-apply</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <java>
                         <includes>
-                            <include>src/main/java/**/*.java</include>
-<!--                            <include>src/test/java/**/*.java</include>-->
+                            <include>${spotless.config.dir}</include>
                         </includes>
                         <importOrder />
                         <removeUnusedImports />
@@ -139,19 +179,19 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.27.0</version>
                 <configuration>
-                    <propertyFile>bin/liquibase.properties</propertyFile>
+                    <propertyFile>${liquibase.config.dir}</propertyFile>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version> <!-- version of plugin -->
+                <version>3.11.0</version>
+                <!-- version of plugin -->
                 <configuration>
-                    <source>17</source>    <!-- set to your JDK version -->
-                    <target>17</target>    <!-- set to your JDK version -->
+                    <source>${java.version}</source>    <!-- set to your JDK version -->
+                    <target>${java.version}</target>    <!-- set to your JDK version -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
