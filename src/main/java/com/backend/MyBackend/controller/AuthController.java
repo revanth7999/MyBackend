@@ -3,8 +3,8 @@ package com.backend.MyBackend.controller;
 import com.backend.MyBackend.Constants;
 import com.backend.MyBackend.config.JwtUtil;
 import com.backend.MyBackend.dto.ApiResponse;
-import com.backend.MyBackend.dto.LoginRequest;
 import com.backend.MyBackend.dto.LoginRequestDto;
+import com.backend.MyBackend.dto.LoginResponseDto;
 import com.backend.MyBackend.dto.UserDto;
 import com.backend.MyBackend.modal.User;
 import com.backend.MyBackend.service.HeadService;
@@ -48,11 +48,11 @@ public class AuthController{
             String deviceInfo = loginRequestDto.getDeviceInfo();
 
             // Authenticate user and get login details
-            LoginRequest loginRequest = headService.login(username,password,deviceInfo);
-            String token = JwtUtil.generateToken(username,loginRequest.getRole());
+            LoginResponseDto loginResponseDto = headService.login(username,password,deviceInfo);
+            String token = JwtUtil.generateToken(username,loginResponseDto.getRole());
             String refreshToken = JwtUtil.generateRefreshToken(username); // New method
-            loginRequest.setToken(token); // Add token to the response DTO
-            loginRequest.setRefreshToken(refreshToken);
+            loginResponseDto.setToken(token); // Add token to the response DTO
+            loginResponseDto.setRefreshToken(refreshToken);
 
             // Create HttpOnly cookie for refresh token
             Cookie refreshTokenCookie = new Cookie("refresh_token",refreshToken);
@@ -63,7 +63,7 @@ public class AuthController{
 
             response.addCookie(refreshTokenCookie);
 
-            return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS,loginRequest));
+            return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS,loginResponseDto));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(),null));
         }

@@ -1,6 +1,6 @@
 package com.backend.MyBackend.dto;
 
-public class LoginRequest{
+public class LoginResponseDto{
     private String username;
     private String role;
     private String token;
@@ -38,13 +38,13 @@ public class LoginRequest{
         this.refreshToken = refreshToken;
     }
 
-    public LoginRequest(String username,String role,String token,String refreshToken){
+    public LoginResponseDto(String username,String role,String token,String refreshToken){
         this.username = username;
         this.role = role;
         this.token = token;
         this.refreshToken = refreshToken;
     }
 
-    public LoginRequest(){
+    public LoginResponseDto(){
     }
 }

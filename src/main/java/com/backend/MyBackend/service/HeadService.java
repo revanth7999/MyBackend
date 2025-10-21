@@ -1,6 +1,6 @@
 package com.backend.MyBackend.service;
 
-import com.backend.MyBackend.dto.LoginRequest;
+import com.backend.MyBackend.dto.LoginResponseDto;
 import com.backend.MyBackend.dto.RestaurantDto;
 import com.backend.MyBackend.dto.RolesDto;
 import com.backend.MyBackend.dto.UserDto;
@@ -100,7 +100,7 @@ public class HeadService{
      * Authenticates a user by verifying the username and password. Returns a LoginRequest DTO if successful. Saves a
      * login session with IP address and device information.
      */
-    public LoginRequest login(String username,String rawPassword,String deviceInfo){
+    public LoginResponseDto login(String username,String rawPassword,String deviceInfo){
         User user = userRepository.findByUsername(username);
         if (user == null || !utility.passwordMatches(rawPassword,user.getPassword())){
             throw new RuntimeException("Invalid username or password");
@@ -110,7 +110,7 @@ public class HeadService{
         LoginSession session = new LoginSession(user,ipAddress,deviceInfo);
         loginSessionRepository.save(session);
 
-        return new LoginRequest(user.getUsername(),user.getRole(),"","");
+        return new LoginResponseDto(user.getUsername(),user.getRole(),"","");
     }
 
     /**
