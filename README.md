@@ -11,13 +11,14 @@ This project contains the backend service for a restaurant management system. It
 mybackend/
 ├── docker/
 │   ├── Dockerfile          # Dockerfile to build the backend application image
-│   └── docker-compose.yml  # Docker Compose configuration for running the app and database together
 ├── src/
 │   ├── main/
 │   │   ├── java/           # Java source code for the Spring Boot application
 │   │   └── resources/      # Application properties, Liquibase changelogs, etc.
 ├── target/                 # Compiled JAR files (after running `mvn clean install`)
 ├── pom.xml                 # Maven project descriptor
+└── docker-compose.yml      # Docker Compose configuration for running the app and database together
+└── testapp.example.env     # Example environment variables file for local testing
 └── README.md               # This README file
 ```
 
