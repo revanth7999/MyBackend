@@ -4,6 +4,7 @@ import com.backend.MyBackend.dto.LoginResponseDto;
 import com.backend.MyBackend.dto.RestaurantDto;
 import com.backend.MyBackend.dto.RolesDto;
 import com.backend.MyBackend.dto.UserDto;
+import com.backend.MyBackend.exceptions.UserInactiveException;
 import com.backend.MyBackend.modal.LoginSession;
 import com.backend.MyBackend.modal.Roles;
 import com.backend.MyBackend.modal.User;
@@ -104,6 +105,11 @@ public class HeadService{
         User user = userRepository.findByUsername(username);
         if (user == null || !utility.passwordMatches(rawPassword,user.getPassword())){
             throw new RuntimeException("Invalid username or password");
+        }
+
+        // Check if user is active
+        if (!user.getIsActive()){
+            throw new UserInactiveException("Your account is deactivated. Please contact support.");
         }
         // Save login session
         String ipAddress = "10.20.1.0"; // Dummy Placeholder for IP address

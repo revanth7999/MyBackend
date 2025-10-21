@@ -15,7 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
     /**
      * Finds a user by their username.
      *
-     * @param username the username of the user
+     * @param username
+     *            the username of the user
      * @return the User entity if found, otherwise null
      */
     User findByUsername(String username);
@@ -23,7 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
     /**
      * Deactivates users by setting their isActive field to false for the given list of user IDs.
      *
-     * @param ids the list of user IDs to deactivate
+     * @param ids
+     *            the list of user IDs to deactivate
      * @return the number of users deactivated
      */
     @Modifying(clearAutomatically = true)

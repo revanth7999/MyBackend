@@ -13,7 +13,8 @@ public class InactiveUsersEvent{
     /**
      * Constructs an InactiveUsersEvent with the specified list of user IDs.
      *
-     * @param userIds the list of user IDs that are inactive
+     * @param userIds
+     *            the list of user IDs that are inactive
      */
     public InactiveUsersEvent(List<Long> userIds){
         this.userIds = userIds;

@@ -26,7 +26,8 @@ public class UserActivityListener{
     /**
      * Handles the InactiveUsersEvent by deactivating the users with the given IDs.
      *
-     * @param event the InactiveUsersEvent containing user IDs to deactivate
+     * @param event
+     *            the InactiveUsersEvent containing user IDs to deactivate
      */
     @Transactional
     @EventListener
