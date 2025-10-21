@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +19,14 @@ public class JobController{
     @Autowired
     private JobService jobService;
 
-    @GetMapping("/inactive-users")
+    /**
+     * Endpoint to trigger fetching and processing of inactive users.
+     *
+     * @return ResponseEntity with no content
+     */
+    @PutMapping("/inactive-users")
     public ResponseEntity<ApiResponse> getAllInactiveUsers(){
         List<UserDto> inactiveUsers = jobService.fetchInactiveUsers();
-        return ResponseEntity.ok(new ApiResponse("Inactive users fetched successfully",inactiveUsers));
+        return ResponseEntity.noContent().build();
     }
 }

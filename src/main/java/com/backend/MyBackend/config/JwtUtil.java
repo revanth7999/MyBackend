@@ -7,15 +7,17 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class JwtUtil{
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Use a securely stored key in
     // production
     private static final long EXPIRATION_MILLIS = 15 * 60 * 1000; // 15 minutes
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     public static String generateToken(String subject,String role){
         long now = System.currentTimeMillis();

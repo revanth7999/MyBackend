@@ -1,43 +1,56 @@
 package com.backend.MyBackend.jobs;
 
 import com.backend.MyBackend.dto.UserDto;
-import com.backend.MyBackend.modal.User;
+import com.backend.MyBackend.events.InactiveUsersEvent;
+import com.backend.MyBackend.repository.LoginSessionRepository;
 import com.backend.MyBackend.repository.UserRepository;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class JobService{
 
+    private static final Logger log = LoggerFactory.getLogger(JobService.class);
+
     @Autowired
     private UserRepository userRepository;
 
-    // Run every day at midnight (00:00)
-    @Scheduled(cron = "0 * * * * *")
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private LoginSessionRepository loginSessionRepository;
+
+    /**
+     * Fetches users who have been inactive for more than 24 hours and publishes an event to process them.
+     *
+     * @return an empty list of UserDto
+     */
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public List<UserDto> fetchInactiveUsers(){
-        System.out.println("🚀 [JOB START] ⏰ Fetching inactive users from database...");
-        List<User> inactiveUsers = userRepository.findByisActiveFalse();
+        log.info("🚀 [JOB START] ⏰ Checking recent login sessions..");
 
-        if (inactiveUsers.isEmpty()){
-            System.out.println("No inactive users found.");
-            return List.of();
-        }
+        LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
+        Timestamp oneDayAgoTs = Timestamp.valueOf(oneDayAgo);
 
-        System.out.println("Inactive users found: " + inactiveUsers.size());
-        inactiveUsers.forEach(
-                user -> System.out.println("Inactive user: " + user.getUsername() + " (ID: " + user.getId() + ")"));
+        // Get all users who logged in within last 24 hours
+        List<Long> idsToDeactivate = loginSessionRepository.findUserIdsSince(oneDayAgoTs);
 
-        // You can add logic here like:
-        // - Send reminder emails
-        // - Log them to a file
-        // - Trigger cleanup/deletion processes
+        // Publish event to process inactive users
+        log.info(("Publishing InactiveUsersEvent for users to deactivate."));
+        eventPublisher.publishEvent(new InactiveUsersEvent(idsToDeactivate));
+        log.info("Published InactiveUsersEvent.");
 
-        // Convert to DTO to exclude password
-        return inactiveUsers.stream()
-                .map(user -> new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),""))
-                .toList();
+        log.info("✅ [JOB END] ⏰ Inactive users processed.");
+        return List.of();
     }
-
 }

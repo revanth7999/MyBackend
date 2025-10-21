@@ -1,6 +1,13 @@
 package com.backend.MyBackend.modal;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
@@ -15,8 +22,9 @@ public class LoginSession{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private Timestamp login_time = new Timestamp(System.currentTimeMillis());
-    private Timestamp logout_time;
+    @Column(name = "login_time")
+    private Timestamp loginTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp logoutTime;
     private String ip_address;
     private String device_info;
 
@@ -39,17 +47,17 @@ public class LoginSession{
     public void setUser(User user){
         this.user = user;
     }
-    public Timestamp getLogin_time(){
-        return login_time;
+    public Timestamp getLoginTime(){
+        return loginTime;
     }
-    public void setLogin_time(Timestamp login_time){
-        this.login_time = login_time;
+    public void setLoginTime(Timestamp loginTime){
+        this.loginTime = loginTime;
     }
-    public Timestamp getLogout_time(){
-        return logout_time;
+    public Timestamp getLogoutTime(){
+        return logoutTime;
     }
-    public void setLogout_time(Timestamp logout_time){
-        this.logout_time = logout_time;
+    public void setLogoutTime(Timestamp logoutTime){
+        this.logoutTime = logoutTime;
     }
     public String getIp_address(){
         return ip_address;
