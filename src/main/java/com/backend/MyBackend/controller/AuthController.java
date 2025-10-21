@@ -4,6 +4,7 @@ import com.backend.MyBackend.Constants;
 import com.backend.MyBackend.config.JwtUtil;
 import com.backend.MyBackend.dto.ApiResponse;
 import com.backend.MyBackend.dto.LoginRequest;
+import com.backend.MyBackend.dto.LoginRequestDto;
 import com.backend.MyBackend.dto.UserDto;
 import com.backend.MyBackend.modal.User;
 import com.backend.MyBackend.service.HeadService;
@@ -39,11 +40,17 @@ public class AuthController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody User user,HttpServletResponse response){
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequestDto loginRequestDto,HttpServletResponse response){
         try{
-            LoginRequest loginRequest = headService.login(user.getUsername(),user.getPassword());
-            String token = JwtUtil.generateToken(user.getUsername(),loginRequest.getRole());
-            String refreshToken = JwtUtil.generateRefreshToken(user.getUsername()); // New method
+            // Create a User object from the DTO
+            String username = loginRequestDto.getUsername();
+            String password = loginRequestDto.getPassword();
+            String deviceInfo = loginRequestDto.getDeviceInfo();
+
+            // Authenticate user and get login details
+            LoginRequest loginRequest = headService.login(username,password,deviceInfo);
+            String token = JwtUtil.generateToken(username,loginRequest.getRole());
+            String refreshToken = JwtUtil.generateRefreshToken(username); // New method
             loginRequest.setToken(token); // Add token to the response DTO
             loginRequest.setRefreshToken(refreshToken);
 

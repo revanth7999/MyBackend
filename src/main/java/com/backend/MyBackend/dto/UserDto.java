@@ -2,9 +2,19 @@ package com.backend.MyBackend.dto;
 
 public class UserDto{
 
+    private String id;
     private String username;
+
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
     private String role;
-    private Boolean is_active;
+    private Boolean isActive;
     private String token;
 
     public String getToken(){
@@ -18,18 +28,19 @@ public class UserDto{
     public UserDto(){
     }
 
-    public Boolean getIs_active(){
-        return is_active;
+    public Boolean getIsActive(){
+        return isActive;
     }
 
-    public void setIs_active(Boolean is_active){
-        this.is_active = is_active;
+    public void setisActive(Boolean isActive){
+        this.isActive = isActive;
     }
 
-    public UserDto(String username,String occupation,Boolean is_active,String token){
+    public UserDto(String id,String username,String occupation,Boolean isActive,String token){
+        this.id = id;
         this.username = username;
         this.role = occupation;
-        this.is_active = is_active;
+        this.isActive = isActive;
         this.token = token;
     }
 

@@ -39,7 +39,8 @@ public class SecurityConfig{
                         "/login/**",
                         "/dev/auth/refresh",
                         "/dev/logout",
-                        "/logout/**")
+                        "/logout/**",
+                        "/api/jobs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
