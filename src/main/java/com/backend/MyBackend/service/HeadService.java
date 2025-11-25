@@ -54,7 +54,8 @@ public class HeadService{
         user.setIsActive(user.getIsActive());
         user.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
-        return new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),"");
+        return new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),"",
+                user.getEmail(),user.getAddress());
     }
 
     public RolesDto adminRegisterUser(Roles role){
@@ -72,7 +73,8 @@ public class HeadService{
                 .findAll()
                 .forEach(
                         user -> allUsers.add(
-                                new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),"")));
+                                new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),"",
+                                        user.getEmail(),user.getAddress())));
         return allUsers;
     }
 

@@ -17,6 +17,24 @@ public class User{
     @Column(name = "is_active")
     private Boolean isActive;
     private Timestamp created_time_stamp;
+    private String email;
+    private String address;
+
+    public String getAddress(){
+        return address;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
 
     public Timestamp getCreated_time_stamp(){
         return created_time_stamp;
@@ -58,13 +76,16 @@ public class User{
         this.role = role;
     }
 
-    public User(Long id,String password,String username,String role,Timestamp createdTimeStamp,Boolean isActive){
+    public User(Long id,String password,String username,String role,Timestamp createdTimeStamp,Boolean isActive,
+            String email,String address){
         this.id = id;
         this.Password = password;
         this.username = username;
         this.role = role;
         this.created_time_stamp = createdTimeStamp;
         this.isActive = isActive;
+        this.email = email;
+        this.address = address;
     }
 
     public User(){

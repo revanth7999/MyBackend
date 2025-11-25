@@ -17,6 +17,25 @@ public class UserDto{
     private Boolean isActive;
     private String token;
 
+    public String getAddress(){
+        return address;
+    }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    private String email;
+    private String address;
+
     public String getToken(){
         return token;
     }
@@ -36,12 +55,15 @@ public class UserDto{
         this.isActive = isActive;
     }
 
-    public UserDto(String id,String username,String occupation,Boolean isActive,String token){
+    public UserDto(String id,String username,String occupation,Boolean isActive,String token,String email,
+            String address){
         this.id = id;
         this.username = username;
         this.role = occupation;
         this.isActive = isActive;
         this.token = token;
+        this.email = email;
+        this.address = address;
     }
 
     public String getUsername(){
