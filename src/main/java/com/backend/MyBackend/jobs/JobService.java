@@ -30,7 +30,7 @@ public class JobService{
     private LoginSessionRepository loginSessionRepository;
 
     /**
-     * Fetches users who have been inactive for more than 24 hours and publishes an event to process them.
+     * Fetches users who have been inactive for more than 90 days and publishes an event to process them.
      *
      * @return an empty list of UserDto
      */
@@ -39,10 +39,10 @@ public class JobService{
     public List<UserDto> fetchInactiveUsers(){
         log.info("🚀 [JOB START] ⏰ Checking recent login sessions..");
 
-        LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
+        LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(90);
         Timestamp oneDayAgoTs = Timestamp.valueOf(oneDayAgo);
 
-        // Get all users who logged in within last 24 hours
+        // Get all users who logged in within last 90 days
         List<Long> idsToDeactivate = loginSessionRepository.findUserIdsSince(oneDayAgoTs);
 
         // Publish event to process inactive users

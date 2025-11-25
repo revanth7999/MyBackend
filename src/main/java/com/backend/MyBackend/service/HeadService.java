@@ -16,7 +16,11 @@ import com.backend.MyBackend.utils.Utility;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +41,8 @@ public class HeadService{
 
     @Autowired
     private LoginSessionRepository loginSessionRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(HeadService.class);
 
     /**
      * Registers a new user by encrypting the password, setting role and active status, and saving the user to the
@@ -128,5 +134,28 @@ public class HeadService{
             throw new UsernameNotFoundException("User not found: " + username);
         }
         return user.getRole();
+    }
+
+    /**
+     * Fetches restaurants with pagination.
+     */
+    public Object getRestaurantsWithPagination(int page,int size){
+        log.info("Triggered pagination: page {}, size {}",page,size);
+        Pageable pageable = PageRequest.of(page,size);
+        return restaurantRepository.findAll(pageable);
+    }
+
+    /**
+     * Fetches restaurants with pagination.
+     */
+    public Object getRestaurantsWithPaginationSearch(int page,int size,String search){
+        log.info("Triggered pagination: page {}, size {}, search {}",page,size,search);
+        Pageable pageable = PageRequest.of(page,size);
+
+        // If search is empty → return all
+        if (search == null || search.trim().isEmpty()){
+            return restaurantRepository.findAll(pageable);
+        }
+        return restaurantRepository.findByNameContainingIgnoreCase(search,pageable);
     }
 }
