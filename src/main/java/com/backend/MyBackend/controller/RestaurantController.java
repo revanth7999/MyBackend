@@ -25,6 +25,12 @@ public class RestaurantController{
 
     /**
      * Endpoint to fetch restaurants with pagination.
+     *
+     * @param page
+     *            The page number to retrieve (default is 0).
+     * @param size
+     *            The number of items per page (default is 10).
+     * @return A ResponseEntity containing an ApiResponse with the fetched restaurants.
      */
     @GetMapping("/restaurants")
     public ResponseEntity<ApiResponse> getRestaurantsWithPagination(
@@ -36,6 +42,17 @@ public class RestaurantController{
                         headService.getRestaurantsWithPagination(page,size)));
     }
 
+    /**
+     * Endpoint to fetch restaurants with pagination and search functionality.
+     *
+     * @param page
+     *            The page number to retrieve (default is 0).
+     * @param size
+     *            The number of items per page (default is 10).
+     * @param search
+     *            The search string to filter restaurant names (default is empty string).
+     * @return A ResponseEntity containing an ApiResponse with the fetched restaurants.
+     */
     @GetMapping("/restaurantssearch")
     public ResponseEntity<ApiResponse> getRestaurantsWithPaginationSearch(
             @RequestParam(defaultValue = "0") int page,

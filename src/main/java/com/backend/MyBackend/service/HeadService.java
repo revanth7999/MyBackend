@@ -146,7 +146,7 @@ public class HeadService{
     }
 
     /**
-     * Fetches restaurants with pagination.
+     * Fetches restaurants with pagination and search functionality.
      */
     public Object getRestaurantsWithPaginationSearch(int page,int size,String search){
         log.info("Triggered pagination: page {}, size {}, search {}",page,size,search);
