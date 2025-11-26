@@ -3,15 +3,15 @@ package com.backend.MyBackend.dto;
 public class LoginResponseDto{
     private String username;
     private String role;
-    private String token;
+    private String accessToken;
     private String refreshToken;
 
-    public String getToken(){
-        return token;
+    public String getAccessToken(){
+        return accessToken;
     }
 
-    public void setToken(String token){
-        this.token = token;
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
     }
 
     public String getUsername(){
@@ -38,10 +38,10 @@ public class LoginResponseDto{
         this.refreshToken = refreshToken;
     }
 
-    public LoginResponseDto(String username,String role,String token,String refreshToken){
+    public LoginResponseDto(String username,String role,String accessToken,String refreshToken){
         this.username = username;
         this.role = role;
-        this.token = token;
+        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 

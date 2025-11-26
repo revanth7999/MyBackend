@@ -49,9 +49,9 @@ public class AuthController{
 
             // Authenticate user and get login details
             LoginResponseDto loginResponseDto = headService.login(username,password,deviceInfo);
-            String token = JwtUtil.generateToken(username,loginResponseDto.getRole());
-            String refreshToken = JwtUtil.generateRefreshToken(username); // New method
-            loginResponseDto.setToken(token); // Add token to the response DTO
+            String accessToken = JwtUtil.generateToken(username,loginResponseDto.getRole());
+            String refreshToken = JwtUtil.generateRefreshToken(username);
+            loginResponseDto.setAccessToken(accessToken); // Add Access-token to the response DTO
             loginResponseDto.setRefreshToken(refreshToken);
 
             // Create HttpOnly cookie for refresh token
