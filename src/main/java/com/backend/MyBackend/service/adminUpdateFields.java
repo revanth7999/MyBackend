@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminService{
+public class adminUpdateFields implements AdminServiceInterface{
+
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     public UserDto updateFields(Long id,Map<String, Object> fields){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -27,7 +29,6 @@ public class AdminService{
                 case "address" :
                     user.setAddress(value.toString());
                     break;
-                // add more if you want
                 default :
                     throw new RuntimeException("Field '" + key + "' is not allowed to update");
             }
@@ -44,5 +45,4 @@ public class AdminService{
                 user.getEmail(),
                 user.getAddress());
     }
-
 }

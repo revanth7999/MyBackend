@@ -2,7 +2,7 @@ package com.backend.MyBackend.controller;
 
 import com.backend.MyBackend.dto.ApiResponse;
 import com.backend.MyBackend.dto.UserDto;
-import com.backend.MyBackend.service.AdminService;
+import com.backend.MyBackend.service.AdminServiceInterface;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController{
 
     @Autowired
-    private AdminService adminService;
+    private AdminServiceInterface adminService;
 
     @PatchMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
