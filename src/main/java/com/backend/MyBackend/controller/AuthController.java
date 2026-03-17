@@ -6,11 +6,16 @@ import com.backend.MyBackend.dto.ApiResponse;
 import com.backend.MyBackend.dto.LoginRequestDto;
 import com.backend.MyBackend.dto.LoginResponseDto;
 import com.backend.MyBackend.dto.UserDto;
+import com.backend.MyBackend.modal.LoginSession;
 import com.backend.MyBackend.modal.User;
+import com.backend.MyBackend.repository.LoginSessionRepository;
+import com.backend.MyBackend.repository.UserRepository;
 import com.backend.MyBackend.service.HeadService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +31,12 @@ public class AuthController{
 
     @Autowired
     private HeadService headService;
+
+    @Autowired
+    private LoginSessionRepository loginSessionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@RequestBody User user){
@@ -94,7 +105,18 @@ public class AuthController{
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(){
+    public ResponseEntity<?> logout(@RequestBody User requestUser){
+        User user = userRepository.findByUsername(requestUser.getUsername());
+
+        Optional<LoginSession> optionalSession = loginSessionRepository
+                .findTopByUserAndLogoutTimeIsNullOrderByLoginTimeDesc(user);
+
+        if (optionalSession.isPresent()){
+            LoginSession session = optionalSession.get();
+            session.setLogoutTime(new Timestamp(System.currentTimeMillis()));
+            loginSessionRepository.save(session);
+        }
+
         ResponseCookie deleteCookie = ResponseCookie.from("refresh_token","")
                 .httpOnly(true)
                 .secure(false)
