@@ -15,6 +15,7 @@
     <include file="db/changelog/changelog-6.0.xml"/>
     <include file="db/changelog/changelog-7.0.xml"/>
     <include file="db/changelog/changelog-8.0.xml"/>
+    <include file="db/changelog/changelog-9.0.xml"/>
 
     <!-- Triggers -->
     <include file="db/triggers/create-insert-admin-user-trigger.xml"/>

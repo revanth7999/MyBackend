@@ -1,5 +1,6 @@
 package com.backend.MyBackend.config;
 
+import com.backend.MyBackend.common.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request){
+        String path = request.getServletPath();
+
+        return path.equals("/dev/auth/login") ||
+                path.equals("/dev/auth/register") ||
+                path.equals("/dev/auth/refresh");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain)

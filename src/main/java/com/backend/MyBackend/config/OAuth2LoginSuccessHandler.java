@@ -1,7 +1,8 @@
 package com.backend.MyBackend.config;
 
-import com.backend.MyBackend.modal.User;
-import com.backend.MyBackend.repository.UserRepository;
+import com.backend.MyBackend.account.entity.User;
+import com.backend.MyBackend.account.repository.UserRepository;
+import com.backend.MyBackend.common.util.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

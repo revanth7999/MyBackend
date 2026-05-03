@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="drop-restaurant-dishes" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="restaurant_dishes"/>
+        </preConditions>
+
+        <dropTable tableName="restaurant_dishes"/>
+    </changeSet>
+
+    <changeSet id="remove-old-dish-columns" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="restaurants" columnName="dish_name"/>
+        </preConditions>
+        <dropColumn tableName="restaurants" columnName="dish_name"/>
+    </changeSet>
+
+    <changeSet id="remove-description-column" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="restaurants" columnName="description"/>
+        </preConditions>
+        <dropColumn tableName="restaurants" columnName="description"/>
+    </changeSet>
+
+    <changeSet id="remove-price-column" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="restaurants" columnName="price"/>
+        </preConditions>
+        <dropColumn tableName="restaurants" columnName="price"/>
+    </changeSet>
+
+</databaseChangeLog>
