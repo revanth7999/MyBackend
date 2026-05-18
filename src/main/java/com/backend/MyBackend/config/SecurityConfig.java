@@ -39,7 +39,7 @@ public class SecurityConfig{
                         "/login/**",
                         "/dev/auth/refresh",
                         "/dev/auth/logout",
-                        "/logout/**",
+                        "/dev/auth/logout/**",
                         "/api/jobs/**")
                         .permitAll()
                         .anyRequest()

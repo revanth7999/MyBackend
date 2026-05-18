@@ -20,17 +20,14 @@ public class adminUpdateFields implements AdminServiceInterface{
 
         fields.forEach((key,value) -> {
             switch (key){
-                case "email" :
-                    user.setEmail(value.toString());
-                    break;
-                case "isActive" :
-                    user.setIsActive(Boolean.parseBoolean(value.toString()));
-                    break;
-                case "address" :
-                    user.setAddress(value.toString());
-                    break;
-                default :
-                    throw new RuntimeException("Field '" + key + "' is not allowed to update");
+                case "email" -> user.setEmail(value.toString());
+
+                case "isActive" -> user.setIsActive(Boolean.parseBoolean(value.toString()));
+
+                case "address" -> user.setAddress(value.toString());
+
+                default -> throw new RuntimeException(
+                        "Field '" + key + "' is not allowed to update");
             }
         });
 

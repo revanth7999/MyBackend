@@ -1,5 +1,7 @@
 package com.backend.MyBackend.account.dto;
 
+import java.sql.Timestamp;
+
 public class UserDto{
 
     private String id;
@@ -9,6 +11,7 @@ public class UserDto{
     private String token;
     private String email;
     private String address;
+    private Timestamp created_time_stamp;
 
     // Getters
     public String getId(){
@@ -31,6 +34,9 @@ public class UserDto{
     }
     public String getAddress(){
         return address;
+    }
+    public Timestamp getCreated_time_stamp(){
+        return created_time_stamp;
     }
 
     // Setters
@@ -55,6 +61,9 @@ public class UserDto{
     public void setAddress(String address){
         this.address = address;
     }
+    public void setCreated_time_stamp(Timestamp created_time_stamp){
+        this.created_time_stamp = created_time_stamp;
+    }
 
     // No-Args Constructor
     public UserDto(){
@@ -71,6 +80,7 @@ public class UserDto{
         this.token = builder.token;
         this.email = builder.email;
         this.address = builder.address;
+        this.created_time_stamp = builder.created_time_stamp;
     }
 
     /**
@@ -84,6 +94,7 @@ public class UserDto{
         private String token;
         private String email;
         private String address;
+        private Timestamp created_time_stamp;
 
         public UserDtoBuilder(String id,String username,String role,Boolean isActive){
             this.id = id;
@@ -102,6 +113,10 @@ public class UserDto{
         }
         public UserDtoBuilder address(String address){
             this.address = address;
+            return this;
+        }
+        public UserDtoBuilder created_time_stamp(Timestamp created_time_stamp){
+            this.created_time_stamp = created_time_stamp;
             return this;
         }
         public UserDto build(){

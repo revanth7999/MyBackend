@@ -11,13 +11,13 @@ import com.backend.MyBackend.common.util.CookieUtil;
 import com.backend.MyBackend.common.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,7 +41,8 @@ public class AuthController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequestDto loginRequestDto,HttpServletResponse response){
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequestDto loginRequestDto,
+            HttpServletResponse response){
         try{
             // Create a User object from the DTO
             String username = loginRequestDto.getUsername();
@@ -79,23 +80,15 @@ public class AuthController{
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse> logout(Authentication authentication){
-
-        if (authentication == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ApiResponse("User not authenticated",null));
-        }
-
-        String username = authentication.getName();
-        userService.logout(username);
-
+    public ResponseEntity<ApiResponse> logout(@RequestBody String user){
+        userService.logout(user);
         ResponseCookie refreshCookie = CookieUtil.deleteCookie("refresh_token");
         ResponseCookie sessionCookie = CookieUtil.deleteCookie("JSESSIONID");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE,refreshCookie.toString())
                 .header(HttpHeaders.SET_COOKIE,sessionCookie.toString())
-                .body(new ApiResponse("Logged out successfully",null));
+                .body(new ApiResponse("User Logged out successfully",null));
     }
 
 }
