@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-<changeSet id="add-dish-datas" author="Revanth N">
-    <update tableName="restaurants">
-        <column name="dish_name" value="Pasta"/>
-        <column name="price" valueNumeric="250"/>
-        <column name="description" value="Creamy Alfredo pasta with herbs"/>
-        <where>id = 1</where>
-    </update>
+    <!-- Step 1: Create the DISHES table if it doesn't exist yet -->
+    <changeSet id="create-dishes-table" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="dishes"/>
+            </not>
+        </preConditions>
+        <createTable tableName="dishes">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="dish_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)"/>
+            <column name="price" type="integer"/>
 
-    <update tableName="restaurants">
-        <column name="dish_name" value="Pizza"/>
-        <column name="price" valueNumeric="300"/>
-        <column name="description" value="Cheese burst pizza with toppings"/>
-        <where>id = 2</where>
-    </update>
+            <!-- Foreign Key column to link back to your Restaurants table -->
+            <column name="restaurant_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_dish_restaurant"
+                             referencedTableName="restaurants"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
 
-    <update tableName="restaurants">
-        <column name="dish_name" value="Burger"/>
-        <column name="price" valueNumeric="150"/>
-        <column name="description" value="Veg burger with fries"/>
-        <where>id = 3</where>
-    </update>
+    <!-- Step 2: Fix the data insertion using <insert> instead of <update> -->
+    <changeSet id="add-dish-datas-fixed" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <!-- Skip if we already populated dish data -->
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM dishes WHERE dish_name = 'Pasta' AND restaurant_id = 1
+            </sqlCheck>
+        </preConditions>
 
-    <rollback>
-        <update tableName="restaurants">
-            <column name="dish_name" value=""/>
-            <column name="price" valueNumeric="0"/>
-            <column name="description" value=""/>
-            <where>id IN (1, 2, 3)</where>
-        </update>
-    </rollback>
-</changeSet>
+        <!-- Link this dish cleanly to 'The Great Restaurant' (id=1) -->
+        <insert tableName="dishes">
+            <column name="dish_name" value="Pasta"/>
+            <column name="description" value="Creamy Alfredo pasta with herbs"/>
+            <column name="price" valueNumeric="250"/>
+            <column name="restaurant_id" value="1"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>

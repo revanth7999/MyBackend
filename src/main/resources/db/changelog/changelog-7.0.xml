@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="create-admin-users-table" author="Revanth">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
         <createTable tableName="admin_users">
             <column name="id" type="INT">
                 <constraints primaryKey="true" nullable="false"/>
@@ -22,6 +27,11 @@
         </createTable>
     </changeSet>
     <changeSet id="drop-email-column-from-admin-users" author="Revanth">
+        <preConditions onFail="MARK_RAN">
+            <!-- Only attempt to drop if the column actually exists in the table -->
+            <columnExists tableName="admin_users" columnName="email"/>
+        </preConditions>
+
         <dropColumn tableName="admin_users" columnName="email"/>
     </changeSet>
 

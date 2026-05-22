@@ -6,6 +6,13 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="add-email-address-columns" author="Revanth N">
+        <!-- Precondition added here to prevent duplicate column errors -->
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="captain" columnName="email"/>
+            </not>
+        </preConditions>
+
         <addColumn tableName="captain">
             <column name="email" type="VARCHAR(100)"/>
             <column name="address" type="VARCHAR(255)"/>

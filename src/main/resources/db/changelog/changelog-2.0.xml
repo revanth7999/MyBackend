@@ -1,13 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <!-- Changeset to insert records into the restaurants table -->
-    <changeSet id="1" author="admin">
+    <!-- STEP 1: If an old database exists with 'zip_code', rename it to 'zipcode' IMMEDIATELY -->
+    <changeSet id="rename-zip-code-to-zipcode" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="restaurants" columnName="zip_code"/>
+        </preConditions>
+        <renameColumn tableName="restaurants"
+                      oldColumnName="zip_code"
+                      newColumnName="zipcode"
+                      columnDataType="varchar(20)"/>
+    </changeSet>
+
+    <!-- ChangeSet 1: Create the RESTAURANTS table only if it doesn't exist -->
+    <changeSet id="1" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="restaurants"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="restaurants">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="cuisine" type="varchar(255)"/>
+            <column name="is_open" type="boolean"/>
+
+            <!-- Flattened fields from the @Embedded Address object -->
+            <column name="street" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+            <column name="state" type="varchar(255)"/>
+            <column name="zipcode" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet 2: Insert initial records only if ID 1 doesn't exist -->
+    <changeSet id="2" author="admin">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM restaurants WHERE id = 1
+            </sqlCheck>
+        </preConditions>
         <insert tableName="restaurants">
             <column name="id" value="1"/>
             <column name="name" value="The Great Restaurant"/>
@@ -16,7 +55,13 @@
         </insert>
     </changeSet>
 
-    <changeSet id="2" author="Revanth N">
+    <!-- ChangeSet 3: Insert only if ID 2 doesn't exist -->
+    <changeSet id="3" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM restaurants WHERE id = 2
+            </sqlCheck>
+        </preConditions>
         <insert tableName="restaurants">
             <column name="id" value="2"/>
             <column name="name" value="Spicy Bistro"/>
@@ -25,7 +70,13 @@
         </insert>
     </changeSet>
 
-    <changeSet id="3" author="Revanth N">
+    <!-- ChangeSet 4: Insert only if ID 3 doesn't exist -->
+    <changeSet id="4" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM restaurants WHERE id = 3
+            </sqlCheck>
+        </preConditions>
         <insert tableName="restaurants">
             <column name="id" value="3"/>
             <column name="name" value="Sushi World"/>
@@ -34,14 +85,25 @@
         </insert>
     </changeSet>
 
-    <changeSet id="4" author="Revanth N">
+    <!-- ChangeSet 5: Add phone and rating columns only if they do not exist -->
+    <changeSet id="5" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="restaurants" columnName="phone"/>
+            </not>
+        </preConditions>
         <addColumn tableName="restaurants">
             <column name="phone" type="varchar(15)"/>
             <column name="rating" type="decimal(2,1)"/>
         </addColumn>
     </changeSet>
 
-    <changeSet id="5" author="Revanth N">
+    <!-- ChangeSet 6: Perform updates safely -->
+    <changeSet id="6" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="restaurants" columnName="phone"/>
+            <columnExists tableName="restaurants" columnName="rating"/>
+        </preConditions>
         <update tableName="restaurants">
             <column name="phone" value="123-456-7890"/>
             <column name="rating" valueNumeric="4.5"/>

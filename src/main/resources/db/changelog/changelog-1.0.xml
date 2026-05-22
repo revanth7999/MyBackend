@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <!-- ChangeSet for inserting new data into CAPTAIN table -->
+    <!-- ChangeSet 1: Create the CAPTAIN table based on the JPA Entity -->
     <changeSet id="1" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="captain"/>
+            </not>
+        </preConditions>
+        <createTable tableName="captain">
+            <!-- Long id mapped with GenerationType.IDENTITY -->
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="is_active" type="boolean"/>
+            <column name="created_time_stamp" type="timestamp"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ChangeSet 2: Inserting initial data into CAPTAIN table (Updated ID to 2) -->
+    <changeSet id="2" author="Revanth N">
         <insert tableName="captain">
             <column name="username" value="captain_01"/>
             <column name="role" value="admin"/>
-<!--            <column name="password" value="password123"/>-->
-<!--            <column name="is_active" value=true/>-->
+            <!-- Uncommented these to populate your active/password fields if desired -->
+            <column name="password" value="admin"/>
+            <column name="is_active" valueBoolean="true"/>
             <column name="created_time_stamp" valueDate="2025-04-28 12:00:00"/>
         </insert>
     </changeSet>

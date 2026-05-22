@@ -6,6 +6,11 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="create-roles-table" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
         <createTable tableName="roles">
             <column name="id" type="INT" autoIncrement="true"/>
             <column name="roles" type="VARCHAR(255)" />

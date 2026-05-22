@@ -17,7 +17,7 @@ public class Dishes{
     private Long id;
     private String dishName;
     private String description;
-    private int price;
+    private java.math.BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -34,7 +34,7 @@ public class Dishes{
     public String getDescription(){
         return description;
     }
-    public int getPrice(){
+    public java.math.BigDecimal getPrice(){
         return price;
     }
 
@@ -48,12 +48,12 @@ public class Dishes{
     public void setDescription(String description){
         this.description = description;
     }
-    public void setPrice(int price){
+    public void setPrice(java.math.BigDecimal price){
         this.price = price;
     }
 
     // Constructor
-    public Dishes(String dishName,String description,int price){
+    public Dishes(String dishName,String description,java.math.BigDecimal price){
         this.dishName = dishName;
         this.description = description;
         this.price = price;

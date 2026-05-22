@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- ChangeSet: Create login_session table safely -->
+    <changeSet id="create-login-session-table" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="login_session"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="login_session">
+            <!-- id BIGINT AUTO_INCREMENT PRIMARY KEY -->
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <!-- user_id BIGINT NOT NULL -->
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP -->
+            <column name="login_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <!-- logout_time TIMESTAMP NULL -->
+            <column name="logout_time" type="timestamp"/>
+
+            <!-- ip_address VARCHAR(50) -->
+            <column name="ip_address" type="varchar(50)"/>
+
+            <!-- device_info VARCHAR(255) -->
+            <column name="device_info" type="varchar(255)"/>
+        </createTable>
+
+        <!-- FOREIGN KEY (user_id) REFERENCES CAPTAIN(id) -->
+        <addForeignKeyConstraint baseTableName="login_session"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_login_session_captain"
+                                 referencedTableName="captain"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="migrate-roles-id-to-bigint" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="roles" columnName="id"/>
+        </preConditions>
+
+        <!-- Alters the data type of the id column to match your Long Java property -->
+        <modifyDataType tableName="roles" columnName="id" newDataType="bigint"/>
+    </changeSet>
+
+</databaseChangeLog>
