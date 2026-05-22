@@ -2,6 +2,8 @@ package com.backend.MyBackend.account.repository;
 
 import com.backend.MyBackend.account.entity.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Transactional
     @Query("UPDATE User u SET u.isActive = false WHERE u.id IN :ids")
     int deactivateUsersByIds(@Param("ids") List<Long> ids);
+
+    Page<User> findByUsernameContainingIgnoreCase(String username,Pageable pageable);
 }

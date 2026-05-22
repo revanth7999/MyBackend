@@ -4,7 +4,6 @@ import com.backend.MyBackend.restaurant.entity.Restaurant;
 import com.backend.MyBackend.restaurant.repository.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestaurantService{
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
+
+    public RestaurantService(RestaurantRepository restaurantRepository){
+        this.restaurantRepository = restaurantRepository;
+    }
 
     private static final Logger log = LoggerFactory.getLogger(RestaurantService.class);
 

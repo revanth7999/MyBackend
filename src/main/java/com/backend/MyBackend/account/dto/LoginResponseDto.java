@@ -5,6 +5,8 @@ import static com.backend.MyBackend.common.util.PasswordUtil.isBlank;
 public class LoginResponseDto{
     private String username;
     private String role;
+    private String email;
+    private String address;
     private String accessToken;
     private String refreshToken;
 
@@ -21,6 +23,12 @@ public class LoginResponseDto{
     public String getRefreshToken(){
         return refreshToken;
     }
+    public String getEmail(){
+        return email;
+    }
+    public String getAddress(){
+        return address;
+    }
 
     // Setters
     public void setUsername(String username){
@@ -34,6 +42,12 @@ public class LoginResponseDto{
     }
     public void setRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public void setAddress(String address){
+        this.address = address;
     }
 
     // Generic Constructor
@@ -52,6 +66,8 @@ public class LoginResponseDto{
         this.role = builder.role;
         this.accessToken = builder.accessToken;
         this.refreshToken = builder.refreshToken;
+        this.email = builder.email;
+        this.address = builder.address;
     }
 
     public static class LoginResponseDtoBuilder{
@@ -59,6 +75,8 @@ public class LoginResponseDto{
         private final String role;
         private String accessToken;
         private String refreshToken;
+        private String email;
+        private String address;
 
         public LoginResponseDtoBuilder(String username,String role){
             this.username = username;
@@ -72,6 +90,16 @@ public class LoginResponseDto{
 
         public LoginResponseDtoBuilder refreshToken(String refreshToken){
             this.refreshToken = refreshToken;
+            return this;
+        }
+
+        public LoginResponseDtoBuilder email(String email){
+            this.email = email;
+            return this;
+        }
+
+        public LoginResponseDtoBuilder address(String address){
+            this.address = address;
             return this;
         }
 

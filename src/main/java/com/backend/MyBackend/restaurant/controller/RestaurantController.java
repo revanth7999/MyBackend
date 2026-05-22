@@ -1,33 +1,26 @@
 package com.backend.MyBackend.restaurant.controller;
 
 import com.backend.MyBackend.common.dto.ApiResponse;
+import com.backend.MyBackend.restaurant.agent.RestaurantAgent;
 import com.backend.MyBackend.restaurant.service.RestaurantService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/dev/restaurants")
 @CrossOrigin(origins = "*")
 public class RestaurantController{
 
-    @Autowired
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
+    private final RestaurantAgent restaurantAgent;
+
+    public RestaurantController(RestaurantService restaurantService,RestaurantAgent restaurantAgent){
+        this.restaurantService = restaurantService;
+        this.restaurantAgent = restaurantAgent;
+    }
 
     /**
      * Endpoint to fetch restaurants with pagination and search functionality.
-     *
-     * @param page
-     *            The page number to retrieve (default is 0).
-     * @param size
-     *            The number of items per page (default is 10).
-     * @param search
-     *            The search string to filter restaurant names (default is empty string).
-     * @return A ResponseEntity containing an ApiResponse with the fetched restaurants.
      */
     @GetMapping
     public ResponseEntity<ApiResponse> getRestaurants(
@@ -39,5 +32,24 @@ public class RestaurantController{
                 new ApiResponse(
                         "Restaurants fetched successfully",
                         restaurantService.getRestaurants(page,size,search)));
+    }
+
+    /**
+     * Endpoint to converse with the Restaurant AI Agent. It queries the database using tools to answer natural language
+     * questions.
+     *
+     * @param userPrompt
+     *            The natural language question from the user.
+     * @return A ResponseEntity containing the AI's response inside your standard ApiResponse wrapper.
+     */
+    @PostMapping("/ask")
+    public ResponseEntity<ApiResponse> askAgent(@RequestBody String userPrompt){
+        // Send the message to the AI, which automatically interacts with your DB tools
+        String aiResponse = restaurantAgent.chat(userPrompt);
+
+        return ResponseEntity.ok(
+                new ApiResponse(
+                        "AI Agent responded successfully",
+                        aiResponse));
     }
 }

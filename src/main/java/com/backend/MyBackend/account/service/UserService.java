@@ -18,24 +18,27 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService{
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RolesRepository rolesRepository;
+    private final PasswordUtil passwordUtil;
+    private final LoginSessionRepository loginSessionRepository;
 
-    @Autowired
-    private RolesRepository rolesRepository;
-
-    @Autowired
-    private PasswordUtil passwordUtil;
-
-    @Autowired
-    private LoginSessionRepository loginSessionRepository;
+    public UserService(UserRepository userRepository,RolesRepository rolesRepository,PasswordUtil passwordUtil,
+            LoginSessionRepository loginSessionRepository){
+        this.userRepository = userRepository;
+        this.rolesRepository = rolesRepository;
+        this.passwordUtil = passwordUtil;
+        this.loginSessionRepository = loginSessionRepository;
+    }
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -117,6 +120,8 @@ public class UserService{
         // return new LoginResponseDto(user.getUsername(),user.getRole(),"","");
         return new LoginResponseDto.LoginResponseDtoBuilder(user.getUsername(),user.getRole())
                 .accessToken(accessToken)
+                .email(user.getEmail())
+                .address(user.getAddress())
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -142,6 +147,20 @@ public class UserService{
             session.setLogoutTime(new Timestamp(System.currentTimeMillis()));
             loginSessionRepository.save(session);
         });
+    }
+
+    /**
+     * Fetches users with pagination.
+     */
+    public Page<User> getUsers(int page,int size,String search){
+        log.info("Fetching users | page={}, size={}, search={}",page,size,search);
+        Pageable pageable = PageRequest.of(page,size);
+
+        if (search == null || search.trim().isEmpty()){
+            return userRepository.findAll(pageable);
+        }
+
+        return userRepository.findByUsernameContainingIgnoreCase(search,pageable);
     }
 
 }
