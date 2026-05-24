@@ -2,7 +2,9 @@ package com.backend.MyBackend.restaurant.controller;
 
 import com.backend.MyBackend.common.dto.ApiResponse;
 import com.backend.MyBackend.restaurant.agent.RestaurantAgent;
+import com.backend.MyBackend.restaurant.dto.RestaurantDto;
 import com.backend.MyBackend.restaurant.service.RestaurantService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,21 @@ public class RestaurantController{
                 new ApiResponse(
                         "Restaurants fetched successfully",
                         restaurantService.getRestaurants(page,size,search)));
+    }
+
+    /**
+     * Endpoint to create new restaurant
+     * @param restaurantDto
+     * @return restaurantDto
+     */
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse> createRestaurant(@RequestBody RestaurantDto restaurantDto){
+        RestaurantDto response = restaurantService.createRestaurant(restaurantDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        new ApiResponse(
+                                "Restaurant Added Successfully",
+                                response));
     }
 
     /**

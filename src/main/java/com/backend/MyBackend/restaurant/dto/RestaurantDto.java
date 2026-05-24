@@ -22,7 +22,7 @@ public class RestaurantDto{
     public String getCuisine(){
         return cuisine;
     }
-    public Boolean getOpen(){
+    public Boolean getIsOpen(){
         return isOpen;
     }
     public String getPhone(){
@@ -45,7 +45,7 @@ public class RestaurantDto{
     public void setCuisine(String cuisine){
         this.cuisine = cuisine;
     }
-    public void setOpen(Boolean open){
+    public void setIsOpen(Boolean open){
         isOpen = open;
     }
     public void setPhone(String phone){

@@ -1,6 +1,8 @@
 package com.backend.MyBackend.restaurant.service;
 
+import com.backend.MyBackend.restaurant.dto.RestaurantDto;
 import com.backend.MyBackend.restaurant.entity.Restaurant;
+import com.backend.MyBackend.restaurant.mapper.RestaurantMapper;
 import com.backend.MyBackend.restaurant.repository.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,11 @@ import org.springframework.stereotype.Service;
 public class RestaurantService{
 
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantMapper restaurantMapper;
 
-    public RestaurantService(RestaurantRepository restaurantRepository){
+    public RestaurantService(RestaurantRepository restaurantRepository,RestaurantMapper restaurantMapper){
         this.restaurantRepository = restaurantRepository;
+        this.restaurantMapper = restaurantMapper;
     }
 
     private static final Logger log = LoggerFactory.getLogger(RestaurantService.class);
@@ -32,5 +36,13 @@ public class RestaurantService{
         }
 
         return restaurantRepository.findByNameContainingIgnoreCase(search,pageable);
+    }
+
+    public RestaurantDto createRestaurant(RestaurantDto restaurantDto){
+        log.info("Creating restaurant");
+        Restaurant restaurant = restaurantMapper.toEntity(restaurantDto);
+        Restaurant savedRestaurant = restaurantRepository.save(restaurant);
+
+        return restaurantMapper.toDto(savedRestaurant);
     }
 }
