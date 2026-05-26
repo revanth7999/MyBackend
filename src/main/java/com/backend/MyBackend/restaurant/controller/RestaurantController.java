@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/dev/restaurants")
+@RequestMapping("/api/restaurants")
 @CrossOrigin(origins = "*")
 public class RestaurantController{
 
@@ -38,6 +38,7 @@ public class RestaurantController{
 
     /**
      * Endpoint to create new restaurant
+     *
      * @param restaurantDto
      * @return restaurantDto
      */
