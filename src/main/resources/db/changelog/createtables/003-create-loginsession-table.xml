@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- MYSQL -->
+    <changeSet id="1-create-login-session-mysql"
+               author="Revanth N"
+               dbms="mysql">
+        <createTable tableName="login_session">
+            <column name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="user_id"
+                    type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_login_session_user"
+                             referencedTableName="captain"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="login_time"
+                    type="TIMESTAMP"/>
+            <column name="logout_time"
+                    type="TIMESTAMP"/>
+            <column name="ip_address"
+                    type="VARCHAR(255)"/>
+            <column name="device_info"
+                    type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- POSTGRESQL -->
+    <changeSet id="2-create-login-session-postgres"
+               author="Revanth N"
+               dbms="postgresql">
+        <createTable tableName="login_session">
+            <column name="id"
+                    type="BIGSERIAL">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="user_id"
+                    type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_login_session_user"
+                             referencedTableName="captain"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="login_time"
+                    type="TIMESTAMP"/>
+            <column name="logout_time"
+                    type="TIMESTAMP"/>
+            <column name="ip_address"
+                    type="VARCHAR(255)"/>
+            <column name="device_info"
+                    type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

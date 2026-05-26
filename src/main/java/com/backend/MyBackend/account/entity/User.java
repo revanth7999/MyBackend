@@ -4,18 +4,26 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "CAPTAIN")
+@Table(name = "captain")
 public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String role;
-    private String Password;
+
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @Column(name = "created_time_stamp")
     private Timestamp created_time_stamp;
     private String email;
     private String address;
@@ -53,7 +61,7 @@ public class User{
     }
 
     public void setPassword(String password){
-        Password = password;
+        password = password;
     }
 
     public void setUsername(String username){
@@ -65,7 +73,7 @@ public class User{
     }
 
     public String getPassword(){
-        return Password;
+        return password;
     }
 
     public String getRole(){
@@ -79,7 +87,7 @@ public class User{
     public User(Long id,String password,String username,String role,Timestamp createdTimeStamp,Boolean isActive,
             String email,String address){
         this.id = id;
-        this.Password = password;
+        this.password = password;
         this.username = username;
         this.role = role;
         this.created_time_stamp = createdTimeStamp;

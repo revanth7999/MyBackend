@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-
-    <!-- Reference individual change logs here -->
-    <include file="db/changelog/changelog-1.0.xml"/>
-    <include file="db/changelog/changelog-2.0.xml"/>
-    <include file="db/changelog/changelog-3.0.xml"/>
-    <include file="db/changelog/changelog-4.0.xml"/>
-    <include file="db/changelog/changelog-5.0.xml"/>
-    <include file="db/changelog/changelog-6.0.xml"/>
-    <include file="db/changelog/changelog-7.0.xml"/>
-    <include file="db/changelog/changelog-8.0.xml"/>
-    <include file="db/changelog/changelog-9.0.xml"/>
-
-    <!-- Triggers -->
-    <include file="db/triggers/create-insert-admin-user-trigger.xml"/>
-
-
+    <!-- CREATE TABLES -->
+    <include file="db/changelog/createtables/001-create-captain-table.xml"/>
+    <include file="db/changelog/createtables/002-create-roles-table.xml"/>
+    <include file="db/changelog/createtables/003-create-loginsession-table.xml"/>
+    <include file="db/changelog/createtables/004-create-restaurants-table.xml"/>
+    <include file="db/changelog/createtables/005-create-dishes-table.xml"/>
+    <!-- INSERTS -->
+    <include file="db/changelog/inserts/001-insert-default-admin.xml"/>
+    <include file="db/changelog/inserts/002-insert-default-roles.xml"/>
+    <include file="db/changelog/inserts/003-insert-restaurant-data.xml"/>
+    <!-- TRIGGERS -->
+    <include file="db/changelog/triggers/create-insert-admin-user-trigger.xml"/>
 </databaseChangeLog>

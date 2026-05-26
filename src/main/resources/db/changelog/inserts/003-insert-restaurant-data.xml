@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!-- INSERT RESTAURANTS -->
+    <changeSet id="1"
+               author="Revanth N">
+        <insert tableName="restaurants">
+            <column name="name"
+                    value="Paradise Biryani"/>
+            <column name="cuisine"
+                    value="Hyderabadi"/>
+            <column name="is_open"
+                    valueBoolean="true"/>
+            <column name="phone"
+                    value="9876543210"/>
+            <column name="rating"
+                    valueNumeric="4.5"/>
+            <column name="street"
+                    value="MG Road"/>
+            <column name="city"
+                    value="Hyderabad"/>
+            <column name="state"
+                    value="Telangana"/>
+            <column name="zipcode"
+                    value="500001"/>
+        </insert>
+        <insert tableName="restaurants">
+            <column name="name"
+                    value="Pizza Palace"/>
+            <column name="cuisine"
+                    value="Italian"/>
+            <column name="is_open"
+                    valueBoolean="true"/>
+            <column name="phone"
+                    value="9123456780"/>
+            <column name="rating"
+                    valueNumeric="4.2"/>
+            <column name="street"
+                    value="Anna Nagar"/>
+            <column name="city"
+                    value="Chennai"/>
+            <column name="state"
+                    value="Tamil Nadu"/>
+            <column name="zipcode"
+                    value="600040"/>
+        </insert>
+        <insert tableName="restaurants">
+            <column name="name"
+                    value="Spicy Village"/>
+            <column name="cuisine"
+                    value="South Indian"/>
+            <column name="is_open"
+                    valueBoolean="false"/>
+            <column name="phone"
+                    value="9988776655"/>
+            <column name="rating"
+                    valueNumeric="4.7"/>
+            <column name="street"
+                    value="Brigade Road"/>
+            <column name="city"
+                    value="Bangalore"/>
+            <column name="state"
+                    value="Karnataka"/>
+            <column name="zipcode"
+                    value="560001"/>
+        </insert>
+    </changeSet>
+    <!-- INSERT DISHES -->
+    <changeSet id="2"
+               author="Revanth N">
+        <!-- Paradise Biryani -->
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Chicken Biryani"/>
+            <column name="description"
+                    value="Hyderabadi dum biryani"/>
+            <column name="price"
+                    valueNumeric="250"/>
+            <column name="restaurant_id"
+                    valueNumeric="1"/>
+        </insert>
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Mutton Biryani"/>
+            <column name="description"
+                    value="Spicy mutton biryani"/>
+            <column name="price"
+                    valueNumeric="320"/>
+            <column name="restaurant_id"
+                    valueNumeric="1"/>
+        </insert>
+        <!-- Pizza Palace -->
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Margherita Pizza"/>
+            <column name="description"
+                    value="Classic cheese pizza"/>
+            <column name="price"
+                    valueNumeric="400"/>
+            <column name="restaurant_id"
+                    valueNumeric="2"/>
+        </insert>
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Veg Pasta"/>
+            <column name="description"
+                    value="Creamy white sauce pasta"/>
+            <column name="price"
+                    valueNumeric="280"/>
+            <column name="restaurant_id"
+                    valueNumeric="2"/>
+        </insert>
+        <!-- Spicy Village -->
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Masala Dosa"/>
+            <column name="description"
+                    value="Crispy dosa with potato filling"/>
+            <column name="price"
+                    valueNumeric="120"/>
+            <column name="restaurant_id"
+                    valueNumeric="3"/>
+        </insert>
+        <insert tableName="dishes">
+            <column name="dish_name"
+                    value="Meals Combo"/>
+            <column name="description"
+                    value="Traditional south indian meals"/>
+            <column name="price"
+                    valueNumeric="180"/>
+            <column name="restaurant_id"
+                    valueNumeric="3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
