@@ -8,6 +8,11 @@
     <changeSet id="4-create-roles-mysql"
                author="Revanth N"
                dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
         <createTable tableName="roles">
             <column name="id"
                     type="BIGINT"
@@ -26,6 +31,11 @@
     <changeSet id="5-create-roles-postgres"
                author="Revanth N"
                dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
         <createTable tableName="roles">
             <column name="id"
                     type="BIGSERIAL">
