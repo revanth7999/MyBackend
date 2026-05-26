@@ -36,4 +36,4 @@ build/
 docker-compose.yml
 
 ### Env ###
-testapp.env
+*.env
