@@ -33,13 +33,13 @@ public class SecurityConfig{
 
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                        "/dev/auth/login",
-                        "/dev/auth/register",
+                        "/api/auth/login",
+                        "/api/auth/register",
                         "/oauth2/**",
                         "/login/**",
-                        "/dev/auth/refresh",
-                        "/dev/auth/logout",
-                        "/dev/auth/logout/**",
+                        "/api/auth/refresh",
+                        "/api/auth/logout",
+                        "/api/auth/logout/**",
                         "/api/jobs/**")
                         .permitAll()
                         .anyRequest()
