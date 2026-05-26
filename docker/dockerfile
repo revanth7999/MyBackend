@@ -1,8 +1,22 @@
-# Use a lightweight Java image
-FROM eclipse-temurin:17-jdk-alpine
+#--Prod--
 
-# Set the working directory
+# Stage 1: Build the application using Maven
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+WORKDIR /build
+
+# Copy your source code and configurations
+COPY . .
+
+# Compile and package the jar (skipping unit tests to speed up the deploy)
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime stage (Your clean, lightweight setup)
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Run the application
+# Copy the compiled jar from the build stage into this runtime image
+COPY --from=build /build/target/*.jar /app/app.jar
+
+EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
