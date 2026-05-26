@@ -9,6 +9,11 @@
     <changeSet id="1-create-captain-mysql"
                author="Revanth N"
                dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="captain"/>
+            </not>
+        </preConditions>
         <createTable tableName="captain">
             <column name="id"
                     type="BIGINT"
@@ -44,6 +49,11 @@
     <changeSet id="2-create-captain-postgres"
                author="Revanth N"
                dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="captain"/>
+            </not>
+        </preConditions>
         <createTable tableName="captain">
             <column name="id"
                     type="BIGSERIAL">

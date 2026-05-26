@@ -8,6 +8,11 @@
     <changeSet id="1"
                author="Revanth N"
                dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="dishes"/>
+            </not>
+        </preConditions>
         <createTable tableName="dishes">
             <column name="id"
                     type="BIGINT"
@@ -34,6 +39,11 @@
     <changeSet id="2"
                author="Revanth N"
                dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="dishes"/>
+            </not>
+        </preConditions>
         <createTable tableName="dishes">
             <column name="id"
                     type="BIGSERIAL">

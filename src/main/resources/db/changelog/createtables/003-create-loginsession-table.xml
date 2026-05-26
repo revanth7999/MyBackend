@@ -9,6 +9,11 @@
     <changeSet id="1-create-login-session-mysql"
                author="Revanth N"
                dbms="mysql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="login_session"/>
+            </not>
+        </preConditions>
         <createTable tableName="login_session">
             <column name="id"
                     type="BIGINT"
@@ -38,6 +43,11 @@
     <changeSet id="2-create-login-session-postgres"
                author="Revanth N"
                dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="login_session"/>
+            </not>
+        </preConditions>
         <createTable tableName="login_session">
             <column name="id"
                     type="BIGSERIAL">
