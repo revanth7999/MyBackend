@@ -35,16 +35,16 @@ public class SecurityConfig{
         http.csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // IMPORTANT
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll() // IMPORTANT
                         .requestMatchers(
-                        "/api/auth/login",
-                        "/api/auth/register",
-                        "/oauth2/**",
-                        "/login/**",
-                        "/api/auth/refresh",
-                        "/api/auth/logout",
-                        "/api/auth/logout/**",
-                        "/api/jobs/**")
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                "/oauth2/**",
+                                "/login/**",
+                                "/api/auth/refresh",
+                                "/api/auth/logout",
+                                "/api/auth/logout/**",
+                                "/api/jobs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
