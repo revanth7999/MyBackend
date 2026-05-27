@@ -1,9 +1,9 @@
 package com.backend.MyBackend.account.controller;
 
+import com.backend.MyBackend.account.dto.CreateUserDto;
 import com.backend.MyBackend.account.dto.LoginRequestDto;
 import com.backend.MyBackend.account.dto.LoginResponseDto;
 import com.backend.MyBackend.account.dto.UserDto;
-import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.service.UserService;
 import com.backend.MyBackend.common.constants.Constants;
 import com.backend.MyBackend.common.dto.ApiResponse;
@@ -29,12 +29,13 @@ public class AuthController{
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@RequestBody User user){
+    public ResponseEntity<ApiResponse> register(@RequestBody CreateUserDto createUserDto){
         try{
-            UserDto userDTO = userService.register(user);
-            String token = JwtUtil.generateToken(user.getUsername(),userDTO.getRole());
+            UserDto userDTO = userService.register(createUserDto);
+            String token = JwtUtil.generateToken(createUserDto.getUsername(),userDTO.getRole());
             userDTO.setToken(token); // Add token to the response DTO
-            return ResponseEntity.ok(new ApiResponse(user.getUsername() + Constants.USER_REGISTER_SUCCESS,userDTO));
+            return ResponseEntity
+                    .ok(new ApiResponse(createUserDto.getUsername() + Constants.USER_REGISTER_SUCCESS,userDTO));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(),null));
         }

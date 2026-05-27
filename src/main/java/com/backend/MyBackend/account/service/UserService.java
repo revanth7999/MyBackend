@@ -1,5 +1,6 @@
 package com.backend.MyBackend.account.service;
 
+import com.backend.MyBackend.account.dto.CreateUserDto;
 import com.backend.MyBackend.account.dto.LoginResponseDto;
 import com.backend.MyBackend.account.dto.RolesDto;
 import com.backend.MyBackend.account.dto.UserDto;
@@ -46,19 +47,27 @@ public class UserService{
      * Registers a new user by encrypting the password, setting role and active status, and saving the user to the
      * repository.
      */
-    public UserDto register(User user){
-        user.setPassword(passwordUtil.passwordEncrypt(user.getPassword()));
-        user.setRole(user.getRole());
-        user.setIsActive(user.getIsActive());
-        user.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
-        userRepository.save(user);
-        // return new UserDto(user.getId(),user.getUsername(),user.getRole(),user.getIsActive(),"",
-        // user.getEmail(),user.getAddress());
-        return new UserDto.UserDtoBuilder(user.getId(),user.getUsername(),user.getRole(),user.getIsActive())
-                .token("")
-                .email(user.getEmail())
-                .address(user.getAddress())
-                .build();
+    public UserDto register(CreateUserDto createUserDto){
+        // 1. Instantiate a fresh Database Entity object
+        User databaseUser = new User();
+        databaseUser.setUsername(createUserDto.getUsername());
+        databaseUser.setPassword(passwordUtil.passwordEncrypt(createUserDto.getPassword()));
+        databaseUser.setRole(createUserDto.getRole() != null ? createUserDto.getRole() : "CUSTOMER");
+        databaseUser.setIsActive(createUserDto.getIs_active() != null ? createUserDto.getIs_active() : true);
+        databaseUser.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
+        databaseUser.setEmail("");
+        databaseUser.setAddress("");
+        User savedUser = userRepository.save(databaseUser);
+
+        return new UserDto.UserDtoBuilder(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getRole(),
+                savedUser.getIsActive())
+                        .token("")
+                        .email(savedUser.getEmail())
+                        .address(savedUser.getAddress())
+                        .build();
     }
 
     public RolesDto adminRegisterUser(Roles role){
