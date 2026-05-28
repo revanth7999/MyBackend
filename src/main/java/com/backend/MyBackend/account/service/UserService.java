@@ -48,7 +48,6 @@ public class UserService{
      * repository.
      */
     public UserDto register(CreateUserDto createUserDto){
-        // 1. Instantiate a fresh Database Entity object
         User databaseUser = new User();
         databaseUser.setUsername(createUserDto.getUsername());
         databaseUser.setPassword(passwordUtil.passwordEncrypt(createUserDto.getPassword()));
