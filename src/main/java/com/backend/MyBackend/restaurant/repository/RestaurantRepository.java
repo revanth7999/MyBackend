@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>{
+
+    @EntityGraph(attributePaths = {"dishes"})
+    Page<Restaurant> findAll(Pageable pageable);
 
     /**
      * Finds restaurants with names containing the specified string, ignoring case sensitivity, and returns them in a
@@ -21,6 +25,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long>{
      *            The pagination information.
      * @return A page of restaurants matching the search criteria.
      */
+    @EntityGraph(attributePaths = {"dishes"})
     Page<Restaurant> findByNameContainingIgnoreCase(String name,Pageable pageable);
 
     // Custom query to find a restaurant by its exact name

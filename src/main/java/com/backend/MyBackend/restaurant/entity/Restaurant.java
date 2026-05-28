@@ -15,6 +15,8 @@ public class Restaurant{
     private Long id;
     private String name;
     private String cuisine;
+
+    @Column(name = "is_open")
     private Boolean isOpen;
     private String phone;
     private BigDecimal rating;
@@ -22,9 +24,6 @@ public class Restaurant{
     @Embedded
     private Address address;
 
-    // @ElementCollection
-    // @CollectionTable(name = "restaurant_dishes", joinColumns = @JoinColumn(name = "restaurant_id"))
-    // private List<Dishes> dishes = new ArrayList<>();
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Dishes> dishes = new ArrayList<>();;
