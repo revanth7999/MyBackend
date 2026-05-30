@@ -1,20 +1,34 @@
-#--Prod--
+# ===========================================
+# Multi-Stage Docker Build
+# ===========================================
+# Stage 1 (build)        Stage 2 (runtime)
+# ----------------        -----------------
+# maven image             jdk-alpine image
+# source code             
+# dependencies cache  --jar-->  app.jar only
+# build tools             
+# app.jar                 
+# (thrown away)           (this is what ships)
+# ===========================================
 
-# Stage 1: Build the application using Maven
+
+# Stage 1: Build — temporary, thrown away after docker builds
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /build
 
-# Copy your source code and configurations
+# Copy source code and configurations
 COPY . .
 
-# Compile and package the jar (skipping unit tests to speed up the deploy)
+# Compile and package the jar (skipping unit tests to speed up the build)
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime stage (Your clean, lightweight setup)
+
+# Stage 2: Runtime — the actual final image that ships
+# Only contains the jar, not maven/source/build tools (~180MB vs ~600MB)
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# Copy the compiled jar from the build stage into this runtime image
+# Pull only the jar from Stage 1 — everything else in Stage 1 is discarded
 COPY --from=build /build/target/*.jar /app/app.jar
 
 EXPOSE 8080
