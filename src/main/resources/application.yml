@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: MyBackend
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        globally_quoted_identifiers: false
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/db.changelog-master.xml
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            redirect-uri: ${GITHUB_REDIRECT_URI}
+            scope:
+              - user:email
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: login
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm.connections.pooling: off
+        orm.deprecation: off
+        hibernate: error
+
+app:
+  logging_features:
+    print_db_info: true
+    print_app_summary: true
+
+langchain4j:
+  ollama:
+    chat-model:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      model-name: ${OLLAMA_MODEL:gemma4}
+      timeout: PT5M
