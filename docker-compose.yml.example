@@ -8,8 +8,9 @@ services:
       - "8080:8080"
     volumes:
       - ./target/MyBackend-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - ./src/main/resources/application.yml:/app/config/application.yml
     env_file:
-      - testapp.env
+      - secrets.env
     networks:
       - my_shared_network
     extra_hosts:
