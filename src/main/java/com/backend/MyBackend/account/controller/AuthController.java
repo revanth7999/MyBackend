@@ -7,8 +7,8 @@ import com.backend.MyBackend.account.dto.UserDto;
 import com.backend.MyBackend.account.service.UserService;
 import com.backend.MyBackend.common.constants.Constants;
 import com.backend.MyBackend.common.dto.ApiResponse;
-import com.backend.MyBackend.common.util.CookieUtil;
 import com.backend.MyBackend.common.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.Map;
@@ -86,15 +86,23 @@ public class AuthController{
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse> logout(@RequestBody String user){
-        userService.logout(user);
-        ResponseCookie refreshCookie = CookieUtil.deleteCookie("refresh_token");
-        ResponseCookie sessionCookie = CookieUtil.deleteCookie("JSESSIONID");
+    public ResponseEntity<ApiResponse> logout(HttpServletRequest request,
+            HttpServletResponse response){
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,refreshCookie.toString())
-                .header(HttpHeaders.SET_COOKIE,sessionCookie.toString())
-                .body(new ApiResponse("User Logged out successfully",null));
+        boolean isProd = environment.equals("prod");
+
+        // clears the HttpOnly cookie
+        ResponseCookie clearCookie = ResponseCookie.from("refresh_token","")
+                .httpOnly(true)
+                .secure(isProd)
+                .sameSite(isProd ? "None" : "Lax")
+                .path("/")
+                .maxAge(0) // expires immediately
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE,clearCookie.toString());
+
+        return ResponseEntity.ok(new ApiResponse("Logged out successfully",null));
     }
 
 }
