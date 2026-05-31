@@ -9,11 +9,11 @@ import com.backend.MyBackend.common.constants.Constants;
 import com.backend.MyBackend.common.dto.ApiResponse;
 import com.backend.MyBackend.common.util.CookieUtil;
 import com.backend.MyBackend.common.util.JwtUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -41,11 +41,13 @@ public class AuthController{
         }
     }
 
+    @Value("${app.environment}")
+    private String environment;
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequestDto loginRequestDto,
             HttpServletResponse response){
         try{
-            // Create a User object from the DTO
             String username = loginRequestDto.getUsername();
             String password = loginRequestDto.getPassword();
             String deviceInfo = loginRequestDto.getDeviceInfo();
@@ -53,14 +55,17 @@ public class AuthController{
             LoginResponseDto loginResponseDto = userService.login(username,password,deviceInfo);
             String refreshToken = loginResponseDto.getRefreshToken();
 
-            // Create HttpOnly cookie for refresh token
-            Cookie refreshTokenCookie = new Cookie("refresh_token",refreshToken);
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setSecure(false); // set true if using HTTPS
-            refreshTokenCookie.setPath("/"); // cookie valid for entire domain
-            refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // e.g. 7 days expiry
+            boolean isProd = environment.equals("prod");
 
-            response.addCookie(refreshTokenCookie);
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token",refreshToken)
+                    .httpOnly(true)
+                    .secure(isProd) // false on local, true on prod
+                    .sameSite(isProd ? "None" : "Lax") // None on prod, Lax on local
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60)
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE,refreshTokenCookie.toString());
 
             return ResponseEntity.ok(new ApiResponse(Constants.LOGIN_SUCCESS,loginResponseDto));
         } catch (Exception e){

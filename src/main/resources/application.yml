@@ -51,6 +51,7 @@ app:
   logging_features:
     print_db_info: true
     print_app_summary: true
+  environment: ${APP_ENVIRONMENT:local}
 
 langchain4j:
   ollama:
