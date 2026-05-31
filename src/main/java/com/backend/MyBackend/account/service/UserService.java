@@ -125,8 +125,7 @@ public class UserService{
         String accessToken = JwtUtil.generateToken(username,user.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(username);
 
-        // return new LoginResponseDto(user.getUsername(),user.getRole(),"","");
-        return new LoginResponseDto.LoginResponseDtoBuilder(user.getUsername(),user.getRole())
+        return new LoginResponseDto.LoginResponseDtoBuilder(user.getId(),user.getUsername(),user.getRole())
                 .accessToken(accessToken)
                 .email(user.getEmail())
                 .address(user.getAddress())

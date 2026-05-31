@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class UserDto{
 
-    private String id;
+    private Long id;
     private String username;
     private String role;
     private Boolean isActive;
@@ -14,7 +14,7 @@ public class UserDto{
     private Timestamp created_time_stamp;
 
     // Getters
-    public String getId(){
+    public Long getId(){
         return id;
     }
     public String getUsername(){
@@ -40,7 +40,7 @@ public class UserDto{
     }
 
     // Setters
-    public void setId(String id){
+    public void setId(Long id){
         this.id = id;
     }
     public void setUsername(String username){
@@ -87,7 +87,7 @@ public class UserDto{
      * Builder Design pattern
      */
     public static class UserDtoBuilder{
-        private final String id;
+        private final Long id;
         private final String username;
         private final String role;
         private final Boolean isActive;
@@ -96,7 +96,7 @@ public class UserDto{
         private String address;
         private Timestamp created_time_stamp;
 
-        public UserDtoBuilder(String id,String username,String role,Boolean isActive){
+        public UserDtoBuilder(Long id,String username,String role,Boolean isActive){
             this.id = id;
             this.username = username;
             this.role = role;

@@ -10,6 +10,8 @@
     <include file="db/changelog/createtables/003-create-loginsession-table.xml"/>
     <include file="db/changelog/createtables/004-create-restaurants-table.xml"/>
     <include file="db/changelog/createtables/005-create-dishes-table.xml"/>
+    <include file="db/changelog/createtables/006-create-cart-table.xml"/>
+    <include file="db/changelog/createtables/007-create-cartItem-table.xml"/>
     <!-- INSERTS -->
     <include file="db/changelog/inserts/001-insert-default-admin.xml"/>
     <include file="db/changelog/inserts/002-insert-default-roles.xml"/>
