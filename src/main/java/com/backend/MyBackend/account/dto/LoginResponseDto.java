@@ -3,6 +3,7 @@ package com.backend.MyBackend.account.dto;
 import static com.backend.MyBackend.common.util.PasswordUtil.isBlank;
 
 public class LoginResponseDto{
+    private Long userId;
     private String username;
     private String role;
     private String email;
@@ -11,6 +12,10 @@ public class LoginResponseDto{
     private String refreshToken;
 
     // Getters
+
+    public Long getUserId(){
+        return userId;
+    }
     public String getUsername(){
         return username;
     }
@@ -31,6 +36,9 @@ public class LoginResponseDto{
     }
 
     // Setters
+    public void setUserId(Long userId){
+        this.userId = userId;
+    }
     public void setUsername(String username){
         this.username = username;
     }
@@ -62,6 +70,7 @@ public class LoginResponseDto{
     }
 
     public LoginResponseDto(LoginResponseDtoBuilder builder){
+        this.userId = builder.userId;
         this.username = builder.username;
         this.role = builder.role;
         this.accessToken = builder.accessToken;
@@ -71,6 +80,7 @@ public class LoginResponseDto{
     }
 
     public static class LoginResponseDtoBuilder{
+        private final Long userId;
         private final String username;
         private final String role;
         private String accessToken;
@@ -78,7 +88,8 @@ public class LoginResponseDto{
         private String email;
         private String address;
 
-        public LoginResponseDtoBuilder(String username,String role){
+        public LoginResponseDtoBuilder(Long userId,String username,String role){
+            this.userId = userId;
             this.username = username;
             this.role = role;
         }

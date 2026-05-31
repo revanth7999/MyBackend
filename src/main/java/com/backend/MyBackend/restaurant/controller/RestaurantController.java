@@ -3,7 +3,9 @@ package com.backend.MyBackend.restaurant.controller;
 import com.backend.MyBackend.common.dto.ApiResponse;
 import com.backend.MyBackend.restaurant.agent.RestaurantAgent;
 import com.backend.MyBackend.restaurant.dto.RestaurantDto;
+import com.backend.MyBackend.restaurant.entity.Restaurant;
 import com.backend.MyBackend.restaurant.service.RestaurantService;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +51,16 @@ public class RestaurantController{
                 .body(
                         new ApiResponse(
                                 "Restaurant Added Successfully",
+                                response));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getRestaurantById(@PathVariable Long id){
+        Optional<Restaurant> response = restaurantService.getRestaurantById(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        new ApiResponse(
+                                "Restaurant Fetched Successfully",
                                 response));
     }
 

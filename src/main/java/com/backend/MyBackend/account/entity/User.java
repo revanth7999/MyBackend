@@ -99,7 +99,7 @@ public class User{
     public User(){
     }
 
-    public String getId(){
-        return String.valueOf(id);
+    public Long getId(){
+        return id;
     }
 }

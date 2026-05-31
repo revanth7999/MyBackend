@@ -4,6 +4,7 @@ import com.backend.MyBackend.restaurant.dto.RestaurantDto;
 import com.backend.MyBackend.restaurant.entity.Restaurant;
 import com.backend.MyBackend.restaurant.mapper.RestaurantMapper;
 import com.backend.MyBackend.restaurant.repository.RestaurantRepository;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -44,5 +45,10 @@ public class RestaurantService{
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
 
         return restaurantMapper.toDto(savedRestaurant);
+    }
+
+    public Optional<Restaurant> getRestaurantById(Long id){
+        log.info("Fetching restaurant");
+        return restaurantRepository.findById(id);
     }
 }

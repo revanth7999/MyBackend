@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!-- POSTGRESQL -->
+    <changeSet id="1"
+               author="Revanth N"
+               dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="cart"/>
+            </not>
+        </preConditions>
+        <createTable tableName="cart">
+            <column name="cart_id"
+                    type="BIGSERIAL">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="user_id"
+                    type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status"
+                    type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at"
+                    type="TIMESTAMP"/>
+            <column name="updated_at"
+                    type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
