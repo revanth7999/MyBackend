@@ -1,12 +1,10 @@
-package com.backend.MyBackend.account.service;
+package com.backend.MyBackend.email.service;
 
 import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.repository.UserRepository;
 import java.sql.Timestamp;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,12 +15,18 @@ public class EmailService{
     @Value("${app.frontendUrl}")
     private String frontendUrl;
 
-    private final UserRepository userRepository;
-    private final JavaMailSender javaMailSender;
+    @Value("${app.resend.api}")
+    private String resendApi;
 
-    public EmailService(UserRepository userRepository,JavaMailSender javaMailSender){
+    @Value("${app.environment}")
+    private String environment;
+
+    private final UserRepository userRepository;
+    private final EmailProvider emailProvider;
+
+    public EmailService(UserRepository userRepository,EmailProvider emailProvider){
         this.userRepository = userRepository;
-        this.javaMailSender = javaMailSender;
+        this.emailProvider = emailProvider;
     }
 
     public void sendVerificationEmail(){
@@ -42,20 +46,21 @@ public class EmailService{
                 new Timestamp(
                         System.currentTimeMillis() + 24 * 60 * 60 * 1000));
 
-        userRepository.save(user);
-
+        String to = user.getEmail();
+        String subject = "Verify your email";
         String verificationUrl = frontendUrl + "/verify-email?token="
                 + token;
+        String html = """
+                    <p>Click the link below to verify your email:</p>
+                    <a href="%s">Verify Email</a>
+                """.formatted(verificationUrl);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setTo(user.getEmail());
-        message.setSubject("Verify Your Email");
-        message.setText(
-                "Click the link below to verify your email:\n\n"
-                        + verificationUrl);
-
-        javaMailSender.send(message);
+        try{
+            emailProvider.sendEmail(to,subject,html);
+            userRepository.save(user);
+        } catch (Exception e){
+            throw new RuntimeException("Email sending failed");
+        }
     }
 
     public void verifyEmail(String token){

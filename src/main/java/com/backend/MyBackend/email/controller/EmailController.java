@@ -1,7 +1,7 @@
-package com.backend.MyBackend.account.controller;
+package com.backend.MyBackend.email.controller;
 
-import com.backend.MyBackend.account.service.EmailService;
 import com.backend.MyBackend.common.dto.ApiResponse;
+import com.backend.MyBackend.email.service.EmailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
