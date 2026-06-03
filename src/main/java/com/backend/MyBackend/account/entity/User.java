@@ -28,64 +28,85 @@ public class User{
     private String email;
     private String address;
 
-    public String getAddress(){
-        return address;
-    }
+    @Column(name = "is_email_verified")
+    private boolean isEmailVerified = false;
+    @Column(name = "email_verification_token")
+    private String emailVerificationToken;
+    @Column(name = "email_verification_expiry")
+    private Timestamp emailVerificationExpiry;
 
-    public void setAddress(String address){
-        this.address = address;
+    // Getters
+    public Long getId(){
+        return id;
     }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public void setEmail(String email){
-        this.email = email;
-    }
-
-    public Timestamp getCreated_time_stamp(){
-        return created_time_stamp;
-    }
-
-    public void setCreated_time_stamp(Timestamp created_time_stamp){
-        this.created_time_stamp = created_time_stamp;
-    }
-
-    public Boolean getIsActive(){
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active){
-        isActive = active;
-    }
-
-    public void setPassword(String password){
-        this.password = password;
-    }
-
-    public void setUsername(String username){
-        this.username = username;
-    }
-
     public String getUsername(){
         return username;
     }
-
-    public String getPassword(){
-        return password;
-    }
-
     public String getRole(){
         return role;
     }
+    public String getPassword(){
+        return password;
+    }
+    public Boolean getIsActive(){
+        return isActive;
+    }
+    public Timestamp getCreated_time_stamp(){
+        return created_time_stamp;
+    }
+    public String getEmail(){
+        return email;
+    }
+    public String getAddress(){
+        return address;
+    }
+    public boolean getIsEmailVerified(){
+        return isEmailVerified;
+    }
+    public String getEmailVerificationToken(){
+        return emailVerificationToken;
+    }
+    public Timestamp getEmailVerificationExpiry(){
+        return emailVerificationExpiry;
+    }
 
+    // Setters
+    public void setUsername(String username){
+        this.username = username;
+    }
     public void setRole(String role){
         this.role = role;
     }
+    public void setPassword(String password){
+        this.password = password;
+    }
+    public void setIsActive(Boolean active){
+        isActive = active;
+    }
+    public void setCreated_time_stamp(Timestamp created_time_stamp){
+        this.created_time_stamp = created_time_stamp;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public void setAddress(String address){
+        this.address = address;
+    }
+    public void setEmailVerified(boolean emailVerified){
+        isEmailVerified = emailVerified;
+    }
+    public void setEmailVerificationToken(String emailVerificationToken){
+        this.emailVerificationToken = emailVerificationToken;
+    }
+    public void setEmailVerificationExpiry(Timestamp emailVerificationExpiry){
+        this.emailVerificationExpiry = emailVerificationExpiry;
+    }
 
+    public User(){
+    }
     public User(Long id,String password,String username,String role,Timestamp createdTimeStamp,Boolean isActive,
-            String email,String address){
+            String email,String address,Boolean isEmailVerified,String emailVerificationToken,
+            Timestamp emailVerificationExpiry){
         this.id = id;
         this.password = password;
         this.username = username;
@@ -94,12 +115,8 @@ public class User{
         this.isActive = isActive;
         this.email = email;
         this.address = address;
-    }
-
-    public User(){
-    }
-
-    public Long getId(){
-        return id;
+        this.isEmailVerified = isEmailVerified;
+        this.emailVerificationToken = emailVerificationToken;
+        this.emailVerificationExpiry = emailVerificationExpiry;
     }
 }

@@ -28,6 +28,9 @@ public class AuthController{
     @Autowired
     private UserService userService;
 
+    @Value("${app.environment}")
+    private String environment;
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@RequestBody CreateUserDto createUserDto){
         try{
@@ -40,9 +43,6 @@ public class AuthController{
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse(e.getMessage(),null));
         }
     }
-
-    @Value("${app.environment}")
-    private String environment;
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequestDto loginRequestDto,

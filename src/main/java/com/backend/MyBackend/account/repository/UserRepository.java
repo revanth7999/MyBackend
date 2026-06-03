@@ -36,4 +36,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     int deactivateUsersByIds(@Param("ids") List<Long> ids);
 
     Page<User> findByUsernameContainingIgnoreCase(String username,Pageable pageable);
+
+    User findByEmailVerificationToken(String token);
 }

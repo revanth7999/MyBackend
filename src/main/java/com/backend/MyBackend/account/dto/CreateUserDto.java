@@ -11,6 +11,7 @@ public class CreateUserDto{
     private String password;
     private String role;
     private Boolean is_active;
+    private String email;
 
     public String getUsername(){
         return username;
@@ -25,6 +26,10 @@ public class CreateUserDto{
         return is_active;
     }
 
+    public String getEmail(){
+        return email;
+    }
+
     public void setUsername(String username){
         this.username = username;
     }
@@ -36,5 +41,8 @@ public class CreateUserDto{
     }
     public void setIs_active(Boolean is_active){
         this.is_active = is_active;
+    }
+    public void setEmail(String email){
+        this.email = email;
     }
 }

@@ -54,7 +54,7 @@ public class UserService{
         databaseUser.setRole(createUserDto.getRole() != null ? createUserDto.getRole() : "CUSTOMER");
         databaseUser.setIsActive(createUserDto.getIs_active() != null ? createUserDto.getIs_active() : true);
         databaseUser.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
-        databaseUser.setEmail("");
+        databaseUser.setEmail(createUserDto.getEmail());
         databaseUser.setAddress("");
         User savedUser = userRepository.save(databaseUser);
 
@@ -125,12 +125,13 @@ public class UserService{
         String accessToken = JwtUtil.generateToken(username,user.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(username);
 
-        return new LoginResponseDto.LoginResponseDtoBuilder(user.getId(),user.getUsername(),user.getRole())
-                .accessToken(accessToken)
-                .email(user.getEmail())
-                .address(user.getAddress())
-                .refreshToken(refreshToken)
-                .build();
+        return new LoginResponseDto.LoginResponseDtoBuilder(user.getId(),user.getUsername(),user.getRole(),
+                user.getIsEmailVerified())
+                        .accessToken(accessToken)
+                        .email(user.getEmail())
+                        .address(user.getAddress())
+                        .refreshToken(refreshToken)
+                        .build();
     }
 
     /**
