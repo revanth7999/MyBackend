@@ -18,4 +18,6 @@
     <include file="db/changelog/inserts/003-insert-restaurant-data.xml"/>
     <!-- TRIGGERS -->
     <include file="db/changelog/triggers/create-insert-admin-user-trigger.xml"/>
+    <!-- CREATE COLUMNS -->
+    <include file="db/changelog/createColumns/001-add-email-verified-column.xml"/>
 </databaseChangeLog>

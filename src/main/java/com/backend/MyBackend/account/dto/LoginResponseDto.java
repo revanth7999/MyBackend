@@ -7,6 +7,7 @@ public class LoginResponseDto{
     private String username;
     private String role;
     private String email;
+    private boolean isEmailVerified;
     private String address;
     private String accessToken;
     private String refreshToken;
@@ -34,6 +35,9 @@ public class LoginResponseDto{
     public String getAddress(){
         return address;
     }
+    public boolean getIsEmailVerified(){
+        return isEmailVerified;
+    }
 
     // Setters
     public void setUserId(Long userId){
@@ -57,6 +61,9 @@ public class LoginResponseDto{
     public void setAddress(String address){
         this.address = address;
     }
+    public void setIsEmailVerified(boolean isEmailVerified){
+        this.isEmailVerified = isEmailVerified;
+    }
 
     // Generic Constructor
     // public LoginResponseDto(String username,String role,String accessToken,String refreshToken){
@@ -77,6 +84,7 @@ public class LoginResponseDto{
         this.refreshToken = builder.refreshToken;
         this.email = builder.email;
         this.address = builder.address;
+        this.isEmailVerified = builder.isEmailVerified;
     }
 
     public static class LoginResponseDtoBuilder{
@@ -87,11 +95,13 @@ public class LoginResponseDto{
         private String refreshToken;
         private String email;
         private String address;
+        private boolean isEmailVerified;
 
-        public LoginResponseDtoBuilder(Long userId,String username,String role){
+        public LoginResponseDtoBuilder(Long userId,String username,String role,boolean isEmailVerified){
             this.userId = userId;
             this.username = username;
             this.role = role;
+            this.isEmailVerified = isEmailVerified;
         }
 
         public LoginResponseDtoBuilder accessToken(String accessToken){
