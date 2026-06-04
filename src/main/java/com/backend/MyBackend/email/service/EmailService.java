@@ -48,7 +48,7 @@ public class EmailService{
 
         String to = user.getEmail();
         String subject = "Verify your email";
-        String verificationUrl = frontendUrl + "/verify-email?token="
+        String verificationUrl = frontendUrl + "/#/verify-email?token="
                 + token;
         String html = """
                     <p>Click the link below to verify your email:</p>
