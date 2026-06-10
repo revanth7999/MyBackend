@@ -2,9 +2,12 @@ package com.backend.MyBackend.email.service;
 
 import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.repository.UserRepository;
+import com.backend.MyBackend.email.events.VerificationEmailEvent;
 import java.sql.Timestamp;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ public class EmailService{
 
     private final UserRepository userRepository;
     private final EmailProvider emailProvider;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public EmailService(UserRepository userRepository,EmailProvider emailProvider){
         this.userRepository = userRepository;
@@ -46,21 +52,11 @@ public class EmailService{
                 new Timestamp(
                         System.currentTimeMillis() + 24 * 60 * 60 * 1000));
 
-        String to = user.getEmail();
-        String subject = "Verify your email";
-        String verificationUrl = frontendUrl + "/#/verify-email?token="
-                + token;
-        String html = """
-                    <p>Click the link below to verify your email:</p>
-                    <a href="%s">Verify Email</a>
-                """.formatted(verificationUrl);
-
-        try{
-            emailProvider.sendEmail(to,subject,html);
-            userRepository.save(user);
-        } catch (Exception e){
-            throw new RuntimeException("Email sending failed");
-        }
+        userRepository.save(user);
+        applicationEventPublisher.publishEvent(
+                new VerificationEmailEvent(
+                        user.getEmail(),
+                        token));
     }
 
     public void verifyEmail(String token){
