@@ -1,11 +1,15 @@
 package com.backend.MyBackend.cart.controller;
 
 import com.backend.MyBackend.cart.dto.AddToCartRequest;
+import com.backend.MyBackend.cart.dto.CartItemResponse;
 import com.backend.MyBackend.cart.entity.Cart;
 import com.backend.MyBackend.cart.service.CartService;
 import com.backend.MyBackend.common.dto.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +32,12 @@ public class CartController{
         Cart savedCart = cartService.saveCart(request);
         return ResponseEntity.ok(
                 new ApiResponse("Item added to cart",savedCart));
+    }
+
+    @GetMapping("/getUserCart/{userId}")
+    public ResponseEntity<ApiResponse> getCart(@PathVariable Long userId){
+        List<CartItemResponse> CartItemResponses = cartService.getCart(userId);
+        return ResponseEntity.ok(
+                new ApiResponse("Cart Items fetched",CartItemResponses));
     }
 }
