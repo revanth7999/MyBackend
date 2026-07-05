@@ -15,6 +15,7 @@ public class CartMapper{
         Cart cart = new Cart();
         cart.setUserId(request.getUserId());
         cart.setStatus(CartStatus.ACTIVE);
+        cart.setRestaurantId(request.getRestaurantId());
         return cart;
     }
 

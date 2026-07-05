@@ -15,11 +15,6 @@ public class Cart{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-
-    public Long getCartId(){
-        return cartId;
-    }
-
     private Long userId;
 
     @Enumerated(EnumType.STRING)
@@ -31,43 +26,53 @@ public class Cart{
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Column(name = "restaurant_id")
+    private Long restaurantId;
+
+    // Getters
+    public Long getCartId(){
+        return cartId;
+    }
     public Long getUserId(){
         return userId;
     }
-
     public CartStatus getStatus(){
         return status;
     }
-
     public LocalDateTime getCreatedAt(){
         return createdAt;
     }
-
     public LocalDateTime getUpdatedAt(){
         return updatedAt;
     }
+    public Long getRestaurantId(){
+        return restaurantId;
+    }
 
+    // Setters
     public void setUserId(Long userId){
         this.userId = userId;
     }
-
     public void setStatus(CartStatus status){
         this.status = status;
     }
-
     public void setCreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
     }
-
     public void setUpdatedAt(LocalDateTime updatedAt){
         this.updatedAt = updatedAt;
     }
+    public void setRestaurantId(Long restaurantId){
+        this.restaurantId = restaurantId;
+    }
 
-    public Cart(Long userId,CartStatus status,LocalDateTime createdAt,LocalDateTime updatedAt){
+    // Constructors
+    public Cart(Long userId,CartStatus status,LocalDateTime createdAt,LocalDateTime updatedAt,Long restaurantId){
         this.userId = userId;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.restaurantId = restaurantId;
     }
 
     public Cart(){

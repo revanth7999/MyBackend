@@ -1,5 +1,8 @@
 package com.backend.MyBackend.exception;
 
+import com.backend.MyBackend.cart.exception.ActiveCartNotFoundException;
+import com.backend.MyBackend.cart.exception.CartAlreadyExistsException;
+import com.backend.MyBackend.common.dto.ApiResponse;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -24,5 +27,21 @@ public class GlobalExceptionHandler{
                         error.getDefaultMessage()));
 
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ActiveCartNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleActiveCartNotFound(
+            ActiveCartNotFoundException ex){
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(CartAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse> handleCartAlreadyExists(
+            CartAlreadyExistsException ex){
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(ex.getMessage(),null));
     }
 }
