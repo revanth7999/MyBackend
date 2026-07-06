@@ -37,6 +37,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll() // IMPORTANT
                         .requestMatchers(
+                                "/api/test",
                                 "/api/auth/login",
                                 "/api/auth/register",
                                 "/oauth2/**",

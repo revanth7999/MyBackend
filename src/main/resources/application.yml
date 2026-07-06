@@ -79,3 +79,11 @@ langchain4j:
       base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
       model-name: ${OLLAMA_MODEL:gemma4}
       timeout: PT5M
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: ${KEYSTORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: mycert
