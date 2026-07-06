@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     ports:
-      - "8080:8080"
+      - "8443:8443"
     volumes:
       - ./target/MyBackend-0.0.1-SNAPSHOT.jar:/app/app.jar
       - ./src/main/resources/application.yml:/app/config/application.yml
