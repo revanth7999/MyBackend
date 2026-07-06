@@ -1,0 +1,25 @@
+name: Deploy PreProd
+
+on:
+  push:
+    branches:
+      - preprod
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          cd /home/revanth/DineMaster
+          git fetch origin
+          git checkout pre-prod
+          git reset --hard origin/pre-prod
+
+          docker compose down
+          docker compose up --build -d
+
+          docker image prune -f
