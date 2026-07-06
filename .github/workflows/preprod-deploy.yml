@@ -29,6 +29,11 @@ jobs:
           EOF
           chmod 600 secrets.env
 
+      - name: Build Spring Boot
+        run: |
+          cd /home/revanthdev/src/MyBackend
+          mvn clean install -DskipTests
+
       - name: Deploy
         run: |
           cd /home/revanthdev/src/MyBackend
