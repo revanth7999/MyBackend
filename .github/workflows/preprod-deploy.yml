@@ -14,10 +14,10 @@ jobs:
 
       - name: Deploy
         run: |
-          cd /home/revanth/DineMaster
+          cd /home/revanthdev/src/MyBackend
           git fetch origin
-          git checkout pre-prod
-          git reset --hard origin/pre-prod
+          git checkout preprod
+          git reset --hard origin/preprod
 
           docker compose down
           docker compose up --build -d
