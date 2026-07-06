@@ -12,6 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create secrets.env
+        run: |
+          cd /home/revanthdev/src/MyBackend
+          cat <<EOF > secrets.env
+          ${{ secrets.PREPROD_ENV_FILE }}
+          EOF
+          chmod 600 secrets.env
+
       - name: Deploy
         run: |
           cd /home/revanthdev/src/MyBackend
