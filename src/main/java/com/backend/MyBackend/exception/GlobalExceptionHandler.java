@@ -67,4 +67,11 @@ public class GlobalExceptionHandler{
                 .body(new ApiResponse(ex.getMessage(),null));
     }
 
+    @ExceptionHandler(UserNameAlreadyTaken.class)
+    public ResponseEntity<ApiResponse> handleUserNameAlreadyTaken(UserNameAlreadyTaken ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
 }
