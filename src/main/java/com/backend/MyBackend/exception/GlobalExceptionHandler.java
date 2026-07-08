@@ -3,6 +3,7 @@ package com.backend.MyBackend.exception;
 import com.backend.MyBackend.cart.exception.ActiveCartNotFoundException;
 import com.backend.MyBackend.cart.exception.CartAlreadyExistsException;
 import com.backend.MyBackend.common.dto.ApiResponse;
+import com.backend.MyBackend.email.exceptions.EmailNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -44,4 +45,26 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiResponse(ex.getMessage(),null));
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleUserNotFound(UserNotFoundException ex){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleEmailNotFound(EmailNotFoundException ex){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(UserIdRequiredException.class)
+    public ResponseEntity<ApiResponse> handleUseridRequired(UserIdRequiredException ex){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
 }

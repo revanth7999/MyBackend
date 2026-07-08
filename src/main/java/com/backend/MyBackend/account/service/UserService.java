@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService{
+
+    @Value("${app.environment}")
+    private String environment;
 
     private final UserRepository userRepository;
     private final RolesRepository rolesRepository;
@@ -125,13 +129,23 @@ public class UserService{
         String accessToken = JwtUtil.generateToken(username,user.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(username);
 
-        return new LoginResponseDto.LoginResponseDtoBuilder(user.getId(),user.getUsername(),user.getRole(),
-                user.getIsEmailVerified())
+        return new LoginResponseDto.LoginResponseDtoBuilder()
+                .user(new LoginResponseDto.UserDto.UserDtoBuilder(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getRole())
+                                .email(user.getEmail())
+                                .emailVerified(user.getIsEmailVerified())
+                                .address(user.getAddress())
+                                .build())
+                .tokens(new LoginResponseDto.TokenDto.TokenDtoBuilder()
                         .accessToken(accessToken)
-                        .email(user.getEmail())
-                        .address(user.getAddress())
                         .refreshToken(refreshToken)
-                        .build();
+                        .build())
+                .meta(new LoginResponseDto.MetaDto.MetaDtoBuilder()
+                        .environment(environment)
+                        .build())
+                .build();
     }
 
     /**

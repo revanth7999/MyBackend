@@ -53,7 +53,7 @@ public class AuthController{
             String deviceInfo = loginRequestDto.getDeviceInfo();
 
             LoginResponseDto loginResponseDto = userService.login(username,password,deviceInfo);
-            String refreshToken = loginResponseDto.getRefreshToken();
+            String refreshToken = loginResponseDto.getTokens().getRefreshToken();
 
             boolean isProd = environment.equals("prod");
 

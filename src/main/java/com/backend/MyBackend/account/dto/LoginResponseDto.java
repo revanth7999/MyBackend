@@ -1,135 +1,199 @@
 package com.backend.MyBackend.account.dto;
 
-import static com.backend.MyBackend.common.util.PasswordUtil.isBlank;
-
 public class LoginResponseDto{
-    private Long userId;
-    private String username;
-    private String role;
-    private String email;
-    private boolean isEmailVerified;
-    private String address;
-    private String accessToken;
-    private String refreshToken;
 
-    // Getters
-
-    public Long getUserId(){
-        return userId;
-    }
-    public String getUsername(){
-        return username;
-    }
-    public String getRole(){
-        return role;
-    }
-    public String getAccessToken(){
-        return accessToken;
-    }
-    public String getRefreshToken(){
-        return refreshToken;
-    }
-    public String getEmail(){
-        return email;
-    }
-    public String getAddress(){
-        return address;
-    }
-    public boolean getIsEmailVerified(){
-        return isEmailVerified;
-    }
-
-    // Setters
-    public void setUserId(Long userId){
-        this.userId = userId;
-    }
-    public void setUsername(String username){
-        this.username = username;
-    }
-    public void setRole(String role){
-        this.role = role;
-    }
-    public void setAccessToken(String accessToken){
-        this.accessToken = accessToken;
-    }
-    public void setRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-    public void setEmail(String email){
-        this.email = email;
-    }
-    public void setAddress(String address){
-        this.address = address;
-    }
-    public void setIsEmailVerified(boolean isEmailVerified){
-        this.isEmailVerified = isEmailVerified;
-    }
-
-    // Generic Constructor
-    // public LoginResponseDto(String username,String role,String accessToken,String refreshToken){
-    // this.username = username;
-    // this.role = role;
-    // this.accessToken = accessToken;
-    // this.refreshToken = refreshToken;
-    // }
+    private UserDto user;
+    private TokenDto tokens;
+    private MetaDto meta;
 
     public LoginResponseDto(){
     }
 
-    public LoginResponseDto(LoginResponseDtoBuilder builder){
-        this.userId = builder.userId;
-        this.username = builder.username;
-        this.role = builder.role;
-        this.accessToken = builder.accessToken;
-        this.refreshToken = builder.refreshToken;
-        this.email = builder.email;
-        this.address = builder.address;
-        this.isEmailVerified = builder.isEmailVerified;
+    private LoginResponseDto(LoginResponseDtoBuilder builder){
+        this.user = builder.user;
+        this.tokens = builder.tokens;
+        this.meta = builder.meta;
+    }
+
+    public UserDto getUser(){
+        return user;
+    }
+
+    public TokenDto getTokens(){
+        return tokens;
+    }
+
+    public MetaDto getMeta(){
+        return meta;
     }
 
     public static class LoginResponseDtoBuilder{
-        private final Long userId;
-        private final String username;
-        private final String role;
-        private String accessToken;
-        private String refreshToken;
-        private String email;
-        private String address;
-        private boolean isEmailVerified;
+        private UserDto user;
+        private TokenDto tokens;
+        private MetaDto meta;
 
-        public LoginResponseDtoBuilder(Long userId,String username,String role,boolean isEmailVerified){
-            this.userId = userId;
-            this.username = username;
-            this.role = role;
-            this.isEmailVerified = isEmailVerified;
-        }
-
-        public LoginResponseDtoBuilder accessToken(String accessToken){
-            this.accessToken = accessToken;
+        public LoginResponseDtoBuilder user(UserDto user){
+            this.user = user;
             return this;
         }
 
-        public LoginResponseDtoBuilder refreshToken(String refreshToken){
-            this.refreshToken = refreshToken;
+        public LoginResponseDtoBuilder tokens(TokenDto tokens){
+            this.tokens = tokens;
             return this;
         }
 
-        public LoginResponseDtoBuilder email(String email){
-            this.email = email;
-            return this;
-        }
-
-        public LoginResponseDtoBuilder address(String address){
-            this.address = address;
+        public LoginResponseDtoBuilder meta(MetaDto meta){
+            this.meta = meta;
             return this;
         }
 
         public LoginResponseDto build(){
-            if (isBlank(username) || isBlank(role)){
-                throw new IllegalStateException("Required username and role");
-            }
             return new LoginResponseDto(this);
         }
+    }
 
+    // ========================= User DTO =========================
+
+    public static class UserDto{
+
+        private Long id;
+        private String username;
+        private String role;
+        private String email;
+        private boolean emailVerified;
+        private String address;
+
+        private UserDto(UserDtoBuilder builder){
+            this.id = builder.id;
+            this.username = builder.username;
+            this.role = builder.role;
+            this.email = builder.email;
+            this.emailVerified = builder.emailVerified;
+            this.address = builder.address;
+        }
+
+        public Long getId(){
+            return id;
+        }
+        public String getUsername(){
+            return username;
+        }
+        public String getRole(){
+            return role;
+        }
+        public String getEmail(){
+            return email;
+        }
+        public boolean isEmailVerified(){
+            return emailVerified;
+        }
+        public String getAddress(){
+            return address;
+        }
+
+        public static class UserDtoBuilder{
+            private final Long id;
+            private final String username;
+            private final String role;
+
+            private String email;
+            private boolean emailVerified;
+            private String address;
+
+            public UserDtoBuilder(Long id,String username,String role){
+                this.id = id;
+                this.username = username;
+                this.role = role;
+            }
+
+            public UserDtoBuilder email(String email){
+                this.email = email;
+                return this;
+            }
+
+            public UserDtoBuilder emailVerified(boolean emailVerified){
+                this.emailVerified = emailVerified;
+                return this;
+            }
+
+            public UserDtoBuilder address(String address){
+                this.address = address;
+                return this;
+            }
+
+            public UserDto build(){
+                return new UserDto(this);
+            }
+        }
+    }
+
+    // ========================= Token DTO =========================
+
+    public static class TokenDto{
+
+        private String accessToken;
+        private String refreshToken;
+
+        private TokenDto(TokenDtoBuilder builder){
+            this.accessToken = builder.accessToken;
+            this.refreshToken = builder.refreshToken;
+        }
+
+        public String getAccessToken(){
+            return accessToken;
+        }
+
+        public String getRefreshToken(){
+            return refreshToken;
+        }
+
+        public static class TokenDtoBuilder{
+
+            private String accessToken;
+            private String refreshToken;
+
+            public TokenDtoBuilder accessToken(String accessToken){
+                this.accessToken = accessToken;
+                return this;
+            }
+
+            public TokenDtoBuilder refreshToken(String refreshToken){
+                this.refreshToken = refreshToken;
+                return this;
+            }
+
+            public TokenDto build(){
+                return new TokenDto(this);
+            }
+        }
+    }
+
+    // ========================= Meta DTO =========================
+
+    public static class MetaDto{
+
+        private String environment;
+
+        private MetaDto(MetaDtoBuilder builder){
+            this.environment = builder.environment;
+        }
+
+        public String getEnvironment(){
+            return environment;
+        }
+
+        public static class MetaDtoBuilder{
+
+            private String environment;
+
+            public MetaDtoBuilder environment(String environment){
+                this.environment = environment;
+                return this;
+            }
+
+            public MetaDto build(){
+                return new MetaDto(this);
+            }
+        }
     }
 }
