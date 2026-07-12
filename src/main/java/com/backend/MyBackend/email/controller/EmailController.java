@@ -2,6 +2,7 @@ package com.backend.MyBackend.email.controller;
 
 import com.backend.MyBackend.common.dto.ApiResponse;
 import com.backend.MyBackend.email.service.EmailService;
+import com.backend.MyBackend.exception.UserIdRequiredException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,11 @@ public class EmailController{
     }
 
     @PostMapping("/send-verification-email")
-    public ResponseEntity<ApiResponse> sendVerificationEmail(){
-        emailService.sendVerificationEmail();
+    public ResponseEntity<ApiResponse> sendVerificationEmail(@RequestParam(required = false) Long id){
+        if (id == null){
+            throw new UserIdRequiredException("User id is required");
+        }
+        emailService.sendVerificationEmail(id);
         return ResponseEntity.ok(new ApiResponse("Verification email sent",""));
     }
 

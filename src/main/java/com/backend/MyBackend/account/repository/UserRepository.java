@@ -38,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Page<User> findByUsernameContainingIgnoreCase(String username,Pageable pageable);
 
     User findByEmailVerificationToken(String token);
+
+    boolean existsByUsername(String username);
 }

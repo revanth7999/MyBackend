@@ -4,20 +4,11 @@ import com.backend.MyBackend.common.dto.MetaDto;
 import com.backend.MyBackend.common.dto.TokenDto;
 import com.backend.MyBackend.common.dto.UserDetailsDto;
 
-public class LoginResponseDto{
+public class RegisterUserResponseDto{
 
     private UserDetailsDto user;
     private TokenDto tokens;
     private MetaDto meta;
-
-    public LoginResponseDto(){
-    }
-
-    private LoginResponseDto(LoginResponseDtoBuilder builder){
-        this.user = builder.user;
-        this.tokens = builder.tokens;
-        this.meta = builder.meta;
-    }
 
     public UserDetailsDto getUser(){
         return user;
@@ -31,28 +22,37 @@ public class LoginResponseDto{
         return meta;
     }
 
-    public static class LoginResponseDtoBuilder{
+    private RegisterUserResponseDto(RegisterUserResponseDtoBuilder builder){
+        this.user = builder.user;
+        this.tokens = builder.tokens;
+        this.meta = builder.meta;
+    }
+
+    public RegisterUserResponseDto(){
+    }
+
+    public static class RegisterUserResponseDtoBuilder{
         private UserDetailsDto user;
         private TokenDto tokens;
         private MetaDto meta;
 
-        public LoginResponseDtoBuilder user(UserDetailsDto user){
+        public RegisterUserResponseDtoBuilder user(UserDetailsDto user){
             this.user = user;
             return this;
         }
 
-        public LoginResponseDtoBuilder tokens(TokenDto tokens){
+        public RegisterUserResponseDtoBuilder tokens(TokenDto tokens){
             this.tokens = tokens;
             return this;
         }
 
-        public LoginResponseDtoBuilder meta(MetaDto meta){
+        public RegisterUserResponseDtoBuilder meta(MetaDto meta){
             this.meta = meta;
             return this;
         }
 
-        public LoginResponseDto build(){
-            return new LoginResponseDto(this);
+        public RegisterUserResponseDto build(){
+            return new RegisterUserResponseDto(this);
         }
     }
 

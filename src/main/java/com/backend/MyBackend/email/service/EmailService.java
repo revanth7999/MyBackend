@@ -3,13 +3,13 @@ package com.backend.MyBackend.email.service;
 import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.repository.UserRepository;
 import com.backend.MyBackend.email.events.VerificationEmailEvent;
+import com.backend.MyBackend.email.exceptions.EmailNotFoundException;
+import com.backend.MyBackend.exception.UserNotFoundException;
 import java.sql.Timestamp;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,14 +35,13 @@ public class EmailService{
         this.emailProvider = emailProvider;
     }
 
-    public void sendVerificationEmail(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public void sendVerificationEmail(Long id){
+        System.out.println("UserId:: " + id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        String username = authentication.getName();
-        System.out.println("Username:: " + username);
-        User user = userRepository.findByUsername(username);
-        if (user == null){
-            throw new RuntimeException("User not found");
+        if (user.getEmail() == null || user.getEmail().isBlank()){
+            throw new EmailNotFoundException("User email is empty");
         }
         System.out.println(user.getEmail());
         String token = UUID.randomUUID().toString();

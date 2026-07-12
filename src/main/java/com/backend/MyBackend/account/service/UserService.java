@@ -2,6 +2,7 @@ package com.backend.MyBackend.account.service;
 
 import com.backend.MyBackend.account.dto.CreateUserDto;
 import com.backend.MyBackend.account.dto.LoginResponseDto;
+import com.backend.MyBackend.account.dto.RegisterUserResponseDto;
 import com.backend.MyBackend.account.dto.RolesDto;
 import com.backend.MyBackend.account.dto.UserDto;
 import com.backend.MyBackend.account.entity.LoginSession;
@@ -10,15 +11,21 @@ import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.repository.LoginSessionRepository;
 import com.backend.MyBackend.account.repository.RolesRepository;
 import com.backend.MyBackend.account.repository.UserRepository;
+import com.backend.MyBackend.common.constants.Constants;
+import com.backend.MyBackend.common.dto.MetaDto;
+import com.backend.MyBackend.common.dto.TokenDto;
+import com.backend.MyBackend.common.dto.UserDetailsDto;
 import com.backend.MyBackend.common.exception.UserInactiveException;
 import com.backend.MyBackend.common.util.JwtUtil;
 import com.backend.MyBackend.common.util.PasswordUtil;
+import com.backend.MyBackend.exception.UserNameAlreadyTaken;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +34,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService{
+
+    @Value("${app.environment}")
+    private String environment;
 
     private final UserRepository userRepository;
     private final RolesRepository rolesRepository;
@@ -47,7 +57,11 @@ public class UserService{
      * Registers a new user by encrypting the password, setting role and active status, and saving the user to the
      * repository.
      */
-    public UserDto register(CreateUserDto createUserDto){
+    public RegisterUserResponseDto register(CreateUserDto createUserDto){
+        boolean alreadyTaken = isUsernameAvailable(createUserDto.getUsername());
+        if (alreadyTaken){
+            throw new UserNameAlreadyTaken(Constants.USERNAME_UNAVAILABLE);
+        }
         User databaseUser = new User();
         databaseUser.setUsername(createUserDto.getUsername());
         databaseUser.setPassword(passwordUtil.passwordEncrypt(createUserDto.getPassword()));
@@ -58,15 +72,26 @@ public class UserService{
         databaseUser.setAddress("");
         User savedUser = userRepository.save(databaseUser);
 
-        return new UserDto.UserDtoBuilder(
-                savedUser.getId(),
-                savedUser.getUsername(),
-                savedUser.getRole(),
-                savedUser.getIsActive())
-                        .token("")
-                        .email(savedUser.getEmail())
-                        .address(savedUser.getAddress())
-                        .build();
+        String accessToken = JwtUtil.generateToken(savedUser.getUsername(),savedUser.getRole());
+        String refreshToken = JwtUtil.generateRefreshToken(savedUser.getUsername());
+
+        return new RegisterUserResponseDto.RegisterUserResponseDtoBuilder()
+                .user(new UserDetailsDto.UserDtoBuilder(
+                        savedUser.getId(),
+                        savedUser.getUsername(),
+                        savedUser.getRole())
+                                .email(savedUser.getEmail())
+                                .emailVerified(savedUser.getIsEmailVerified())
+                                .address(savedUser.getAddress())
+                                .build())
+                .tokens(new TokenDto.TokenDtoBuilder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build())
+                .meta(new MetaDto.MetaDtoBuilder()
+                        .environment(environment)
+                        .build())
+                .build();
     }
 
     public RolesDto adminRegisterUser(Roles role){
@@ -125,13 +150,23 @@ public class UserService{
         String accessToken = JwtUtil.generateToken(username,user.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(username);
 
-        return new LoginResponseDto.LoginResponseDtoBuilder(user.getId(),user.getUsername(),user.getRole(),
-                user.getIsEmailVerified())
+        return new LoginResponseDto.LoginResponseDtoBuilder()
+                .user(new UserDetailsDto.UserDtoBuilder(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getRole())
+                                .email(user.getEmail())
+                                .emailVerified(user.getIsEmailVerified())
+                                .address(user.getAddress())
+                                .build())
+                .tokens(new TokenDto.TokenDtoBuilder()
                         .accessToken(accessToken)
-                        .email(user.getEmail())
-                        .address(user.getAddress())
                         .refreshToken(refreshToken)
-                        .build();
+                        .build())
+                .meta(new MetaDto.MetaDtoBuilder()
+                        .environment(environment)
+                        .build())
+                .build();
     }
 
     /**
@@ -169,6 +204,11 @@ public class UserService{
         }
 
         return userRepository.findByUsernameContainingIgnoreCase(search,pageable);
+    }
+
+    public Boolean isUsernameAvailable(String username){
+        log.info("Fetching any matching username for={}",username);
+        return userRepository.existsByUsername(username);
     }
 
 }
