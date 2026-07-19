@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +34,9 @@ public class AuthController{
 
     @Value("${app.environment}")
     private String environment;
+
+    private static final Set<String> SECURE_ENVIRONMENTS =
+            Set.of("prod", "preprod");
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@Valid @RequestBody CreateUserDto createUserDto){
@@ -53,7 +58,7 @@ public class AuthController{
             LoginResponseDto loginResponseDto = userService.login(username,password,deviceInfo);
             String refreshToken = loginResponseDto.getTokens().getRefreshToken();
 
-            boolean isProd = environment.equals("prod");
+            boolean isProd = SECURE_ENVIRONMENTS.contains(environment);
 
             ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token",refreshToken)
                     .httpOnly(true)
@@ -87,7 +92,7 @@ public class AuthController{
     public ResponseEntity<ApiResponse> logout(HttpServletRequest request,
             HttpServletResponse response){
 
-        boolean isProd = environment.equals("prod");
+        boolean isProd = SECURE_ENVIRONMENTS.contains(environment);
 
         // clears the HttpOnly cookie
         ResponseCookie clearCookie = ResponseCookie.from("refresh_token","")
