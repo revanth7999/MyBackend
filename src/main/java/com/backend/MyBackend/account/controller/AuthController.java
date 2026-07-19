@@ -1,5 +1,6 @@
 package com.backend.MyBackend.account.controller;
 
+import com.backend.MyBackend.account.dto.ChangePasswordRequestDto;
 import com.backend.MyBackend.account.dto.CreateUserDto;
 import com.backend.MyBackend.account.dto.LoginRequestDto;
 import com.backend.MyBackend.account.dto.LoginResponseDto;
@@ -113,6 +114,16 @@ public class AuthController{
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiResponse(message,available));
+    }
+
+    @PostMapping("/change-password/{id}")
+    public ResponseEntity<ApiResponse> changePassword(
+            @Valid @PathVariable Long id,
+            @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
+        userService.updatePassword(id,changePasswordRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse("Password was updated Successfully",null));
+
     }
 
 }

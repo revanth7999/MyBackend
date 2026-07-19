@@ -1,5 +1,6 @@
 package com.backend.MyBackend.account.service;
 
+import com.backend.MyBackend.account.dto.ChangePasswordRequestDto;
 import com.backend.MyBackend.account.dto.CreateUserDto;
 import com.backend.MyBackend.account.dto.LoginResponseDto;
 import com.backend.MyBackend.account.dto.RegisterUserResponseDto;
@@ -18,7 +19,11 @@ import com.backend.MyBackend.common.dto.UserDetailsDto;
 import com.backend.MyBackend.common.exception.UserInactiveException;
 import com.backend.MyBackend.common.util.JwtUtil;
 import com.backend.MyBackend.common.util.PasswordUtil;
+import com.backend.MyBackend.exception.InvalidExistingPasswordException;
+import com.backend.MyBackend.exception.InvalidPasswordException;
 import com.backend.MyBackend.exception.UserNameAlreadyTaken;
+import com.backend.MyBackend.exception.UserNotFoundException;
+import com.backend.MyBackend.notification.service.NotificationService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +47,15 @@ public class UserService{
     private final RolesRepository rolesRepository;
     private final PasswordUtil passwordUtil;
     private final LoginSessionRepository loginSessionRepository;
+    private final NotificationService notificationService;
 
     public UserService(UserRepository userRepository,RolesRepository rolesRepository,PasswordUtil passwordUtil,
-            LoginSessionRepository loginSessionRepository){
+            LoginSessionRepository loginSessionRepository,NotificationService notificationService){
         this.userRepository = userRepository;
         this.rolesRepository = rolesRepository;
         this.passwordUtil = passwordUtil;
         this.loginSessionRepository = loginSessionRepository;
+        this.notificationService = notificationService;
     }
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -71,6 +78,9 @@ public class UserService{
         databaseUser.setEmail(createUserDto.getEmail());
         databaseUser.setAddress("");
         User savedUser = userRepository.save(databaseUser);
+
+        notificationService.createWelcomeNotification(savedUser);
+        notificationService.createEmailVerificationNotification(savedUser);
 
         String accessToken = JwtUtil.generateToken(savedUser.getUsername(),savedUser.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(savedUser.getUsername());
@@ -211,4 +221,59 @@ public class UserService{
         return userRepository.existsByUsername(username);
     }
 
+    /**
+     * Updates the password for the specified user.
+     *
+     * <p>
+     * This method performs the following validations before updating the password:
+     * <ul>
+     * <li>Verifies that the user exists.</li>
+     * <li>Validates that the provided current (old) password matches the stored password.</li>
+     * <li>Ensures that the new password is different from the current password.</li>
+     * </ul>
+     *
+     * <p>
+     * If all validations pass, the new password is encrypted and persisted to the database.
+     *
+     * @param id
+     *            the unique identifier of the user whose password is to be updated
+     * @param dto
+     *            the request containing the current password and the new password
+     * @throws UserNotFoundException
+     *             if no user exists with the specified ID
+     * @throws InvalidExistingPasswordException
+     *             if the provided current password is incorrect
+     * @throws InvalidPasswordException
+     *             if the new password is the same as the current password
+     */
+    public void updatePassword(Long id,ChangePasswordRequestDto dto){
+
+        log.info("Fetching user {}",id);
+
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("User {} not found - Cannot update password",id);
+                    return new UserNotFoundException("User not found");
+                });
+
+        log.info("Found user {} - Validating password",id);
+
+        // Verify old password
+        if (!passwordUtil.passwordMatches(dto.getOldPassword(),existingUser.getPassword())){
+            throw new InvalidExistingPasswordException("Invalid existing password");
+        }
+
+        // Ensure new password is different
+        if (passwordUtil.passwordMatches(dto.getNewPassword(),existingUser.getPassword())){
+            throw new InvalidPasswordException("New password cannot be the same as the current password.");
+        }
+
+        // Encrypt and save new password
+        existingUser.setPassword(
+                passwordUtil.passwordEncrypt(dto.getNewPassword()));
+
+        userRepository.save(existingUser);
+
+        log.info("Password updated successfully for user {}",id);
+    }
 }

@@ -7,6 +7,13 @@
 
     <!-- INSERT DEFAULT ROLES -->
     <changeSet id="insert-roles" author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM roles
+                WHERE roles = 'ADMIN'
+            </sqlCheck>
+        </preConditions>
         <insert tableName="roles">
             <column name="roles" value="ADMIN"/>
         </insert>
