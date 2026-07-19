@@ -8,6 +8,13 @@
     <!-- INSERT DEFAULT ADMIN USER -->
     <changeSet id="1-insert-admin-user"
                author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM captain
+                WHERE username = 'admin'
+            </sqlCheck>
+        </preConditions>
         <insert tableName="captain">
             <column name="username"
                     value="admin"/>

@@ -7,6 +7,12 @@
     <!-- INSERT RESTAURANTS -->
     <changeSet id="1"
                author="Revanth N">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM restaurants
+            </sqlCheck>
+        </preConditions>
         <insert tableName="restaurants">
             <column name="name"
                     value="Paradise Biryani"/>

@@ -31,6 +31,4 @@ WORKDIR /app
 # Pull only the jar from Stage 1 — everything else in Stage 1 is discarded
 COPY --from=build /build/target/*.jar /app/app.jar
 
-EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

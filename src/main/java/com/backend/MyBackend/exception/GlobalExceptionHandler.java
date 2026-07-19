@@ -74,4 +74,18 @@ public class GlobalExceptionHandler{
                 .body(new ApiResponse(ex.getMessage(),null));
     }
 
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ApiResponse> handleSamePassword(InvalidPasswordException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(InvalidExistingPasswordException.class)
+    public ResponseEntity<ApiResponse> handleOldPassword(InvalidExistingPasswordException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
 }
