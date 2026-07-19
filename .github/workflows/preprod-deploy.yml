@@ -26,6 +26,7 @@ jobs:
           KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
           PROFILE=${{ secrets.PROFILE }}
           OLLAMA_BASE_URL=${{ secrets.OLLAMA_BASE_URL }}
+          APP_ENVIRONMENT=${{ secrets.APP_ENVIRONMENT }}
           EOF
           chmod 600 secrets.env
 
