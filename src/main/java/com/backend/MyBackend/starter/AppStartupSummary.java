@@ -39,5 +39,6 @@ public class AppStartupSummary implements CommandLineRunner{
                 Arrays.toString(env.getActiveProfiles()),
                 env.getProperty("server.port","8080"),
                 env.getProperty("spring.application.name","MyBackend"));
+                env.getProperty("app.environment","dev?");
     }
 }
