@@ -3,6 +3,7 @@ package com.backend.MyBackend.notification.entity;
 import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.notification.enums.NotificationActionType;
 import com.backend.MyBackend.notification.enums.NotificationCategory;
+import com.backend.MyBackend.notification.enums.NotificationCode;
 import com.backend.MyBackend.notification.enums.NotificationPriority;
 import com.backend.MyBackend.notification.enums.NotificationType;
 import jakarta.persistence.*;
@@ -81,4 +82,8 @@ public class Notification{
     public void onCreate(){
         this.createdAt = LocalDateTime.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "notification_code", nullable = false, length = 50)
+    private NotificationCode code;
 }

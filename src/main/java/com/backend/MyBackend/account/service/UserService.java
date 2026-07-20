@@ -160,6 +160,8 @@ public class UserService{
         String accessToken = JwtUtil.generateToken(username,user.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(username);
 
+        notificationService.ensureDefaultNotifications(user);
+
         return new LoginResponseDto.LoginResponseDtoBuilder()
                 .user(new UserDetailsDto.UserDtoBuilder(
                         user.getId(),

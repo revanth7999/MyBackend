@@ -1,0 +1,5 @@
+package com.backend.MyBackend.notification.enums;
+
+public enum NotificationCode {
+    WELCOME,EMAIL_VERIFICATION,PASSWORD_CHANGED,ACCOUNT_LOCKED,PROFILE_INCOMPLETE,NEW_FEATURE,SYSTEM_MAINTENANCE
+}
