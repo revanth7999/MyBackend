@@ -27,6 +27,7 @@ jobs:
           PROFILE=${{ secrets.PROFILE }}
           OLLAMA_BASE_URL=${{ secrets.OLLAMA_BASE_URL }}
           APP_ENVIRONMENT=${{ secrets.APP_ENVIRONMENT }}
+          APP_FRONTEND_URL=${{ secrets.APP_FRONTEND_URL }}
           EOF
           chmod 600 secrets.env
 
