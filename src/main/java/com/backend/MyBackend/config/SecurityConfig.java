@@ -28,6 +28,21 @@ public class SecurityConfig{
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/api/test",
+            "/api/auth/login",
+            "/api/auth/register",
+            "/oauth2/**",
+            "/login/**",
+            "/api/auth/refresh",
+            "/api/auth/logout",
+            "/api/auth/logout/**",
+            "/api/jobs/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.cors(withDefaults());
@@ -36,16 +51,7 @@ public class SecurityConfig{
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll() // IMPORTANT
-                        .requestMatchers(
-                                "/api/test",
-                                "/api/auth/login",
-                                "/api/auth/register",
-                                "/oauth2/**",
-                                "/login/**",
-                                "/api/auth/refresh",
-                                "/api/auth/logout",
-                                "/api/auth/logout/**",
-                                "/api/jobs/**")
+                        .requestMatchers(PUBLIC_ENDPOINTS)
                         .permitAll()
                         .anyRequest()
                         .authenticated())

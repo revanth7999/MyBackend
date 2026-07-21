@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -35,8 +34,7 @@ public class AuthController{
     @Value("${app.environment}")
     private String environment;
 
-    private static final Set<String> SECURE_ENVIRONMENTS =
-            Set.of("prod", "preprod");
+    private static final Set<String> SECURE_ENVIRONMENTS = Set.of("prod","preprod");
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@Valid @RequestBody CreateUserDto createUserDto){

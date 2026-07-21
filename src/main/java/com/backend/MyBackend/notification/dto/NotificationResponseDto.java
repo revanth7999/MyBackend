@@ -2,6 +2,7 @@ package com.backend.MyBackend.notification.dto;
 
 import com.backend.MyBackend.notification.enums.NotificationActionType;
 import com.backend.MyBackend.notification.enums.NotificationCategory;
+import com.backend.MyBackend.notification.enums.NotificationCode;
 import com.backend.MyBackend.notification.enums.NotificationPriority;
 import com.backend.MyBackend.notification.enums.NotificationType;
 import java.time.LocalDateTime;
@@ -15,5 +16,6 @@ public record NotificationResponseDto(
         NotificationCategory category,
         NotificationActionType actionType,
         Boolean isRead,
-        LocalDateTime createdAt) {
+        LocalDateTime createdAt,
+        NotificationCode code) {
 }

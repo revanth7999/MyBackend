@@ -22,4 +22,5 @@
     <!-- CREATE COLUMNS -->
     <include file="db/changelog/createColumns/001-add-email-verified-column.xml"/>
     <include file="db/changelog/createColumns/002-add-restaurantId-to-cart.xml"/>
+    <include file="db/changelog/createColumns/003-add-notification-code-column.xml"/>
 </databaseChangeLog>

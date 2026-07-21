@@ -2,6 +2,9 @@ package com.backend.MyBackend.account.entity;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Entity
 @Table(name = "captain")
@@ -118,5 +121,17 @@ public class User{
         this.isEmailVerified = isEmailVerified;
         this.emailVerificationToken = emailVerificationToken;
         this.emailVerificationExpiry = emailVerificationExpiry;
+    }
+
+    public void verifyEmail(){
+        this.isEmailVerified = true;
+        this.emailVerificationToken = null;
+        this.emailVerificationExpiry = null;
+    }
+
+    public void generateVerificationToken(){
+        this.emailVerificationToken = UUID.randomUUID().toString();
+        this.emailVerificationExpiry = Timestamp.from(
+                Instant.now().plus(24,ChronoUnit.HOURS));
     }
 }

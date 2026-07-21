@@ -3,7 +3,10 @@ package com.backend.MyBackend.exception;
 import com.backend.MyBackend.cart.exception.ActiveCartNotFoundException;
 import com.backend.MyBackend.cart.exception.CartAlreadyExistsException;
 import com.backend.MyBackend.common.dto.ApiResponse;
+import com.backend.MyBackend.email.exceptions.EmailAlreadyVerifiedException;
 import com.backend.MyBackend.email.exceptions.EmailNotFoundException;
+import com.backend.MyBackend.email.exceptions.InvalidVerificationTokenException;
+import com.backend.MyBackend.email.exceptions.VerificationTokenExpiredException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -85,6 +88,30 @@ public class GlobalExceptionHandler{
     public ResponseEntity<ApiResponse> handleOldPassword(InvalidExistingPasswordException ex){
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(InvalidVerificationTokenException.class)
+    public ResponseEntity<ApiResponse> handleInvalidVerificationToken(
+            InvalidVerificationTokenException ex){
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(EmailAlreadyVerifiedException.class)
+    public ResponseEntity<ApiResponse> handleEmailAlreadyVerified(
+            EmailAlreadyVerifiedException ex){
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse(ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(VerificationTokenExpiredException.class)
+    public ResponseEntity<ApiResponse> handleVerificationTokenExpired(
+            VerificationTokenExpiredException ex){
+
+        return ResponseEntity.status(HttpStatus.GONE)
                 .body(new ApiResponse(ex.getMessage(),null));
     }
 
