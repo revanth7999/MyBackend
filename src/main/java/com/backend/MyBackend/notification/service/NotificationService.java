@@ -28,4 +28,6 @@ public interface NotificationService{
     List<NotificationResponseDto> getNotifications(Long userId);
 
     void ensureDefaultNotifications(User user);
+
+    void markEmailVerificationNotificationAsRead(User user);
 }

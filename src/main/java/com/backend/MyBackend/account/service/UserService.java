@@ -9,6 +9,8 @@ import com.backend.MyBackend.account.dto.UserDto;
 import com.backend.MyBackend.account.entity.LoginSession;
 import com.backend.MyBackend.account.entity.Roles;
 import com.backend.MyBackend.account.entity.User;
+import com.backend.MyBackend.account.event.UserRegisteredEvent;
+import com.backend.MyBackend.account.mapper.UserMapper;
 import com.backend.MyBackend.account.repository.LoginSessionRepository;
 import com.backend.MyBackend.account.repository.RolesRepository;
 import com.backend.MyBackend.account.repository.UserRepository;
@@ -24,6 +26,7 @@ import com.backend.MyBackend.exception.InvalidPasswordException;
 import com.backend.MyBackend.exception.UserNameAlreadyTaken;
 import com.backend.MyBackend.exception.UserNotFoundException;
 import com.backend.MyBackend.notification.service.NotificationService;
+import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,60 +52,54 @@ public class UserService{
     private final PasswordUtil passwordUtil;
     private final LoginSessionRepository loginSessionRepository;
     private final NotificationService notificationService;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final UserMapper userMapper;
 
     public UserService(UserRepository userRepository,RolesRepository rolesRepository,PasswordUtil passwordUtil,
-            LoginSessionRepository loginSessionRepository,NotificationService notificationService){
+            LoginSessionRepository loginSessionRepository,NotificationService notificationService,
+            ApplicationEventPublisher applicationEventPublisher,UserMapper userMapper){
         this.userRepository = userRepository;
         this.rolesRepository = rolesRepository;
         this.passwordUtil = passwordUtil;
         this.loginSessionRepository = loginSessionRepository;
         this.notificationService = notificationService;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.userMapper = userMapper;
     }
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     /**
-     * Registers a new user by encrypting the password, setting role and active status, and saving the user to the
-     * repository.
+     * Registers a new user and publishes a {@code UserRegisteredEvent}.
+     *
+     * <p>
+     * The published event triggers additional registration workflows, including notification creation and email
+     * delivery. Notification processing is synchronous, while email delivery is performed asynchronously.
+     *
+     * <p>
+     * The registration response is returned after the event is published. Asynchronous processing continues in the
+     * background without delaying the client response.
      */
+    @Transactional
     public RegisterUserResponseDto register(CreateUserDto createUserDto){
         boolean alreadyTaken = isUsernameAvailable(createUserDto.getUsername());
         if (alreadyTaken){
             throw new UserNameAlreadyTaken(Constants.USERNAME_UNAVAILABLE);
         }
-        User databaseUser = new User();
-        databaseUser.setUsername(createUserDto.getUsername());
-        databaseUser.setPassword(passwordUtil.passwordEncrypt(createUserDto.getPassword()));
-        databaseUser.setRole(createUserDto.getRole() != null ? createUserDto.getRole() : "CUSTOMER");
-        databaseUser.setIsActive(createUserDto.getIs_active() != null ? createUserDto.getIs_active() : true);
-        databaseUser.setCreated_time_stamp(new Timestamp(System.currentTimeMillis()));
-        databaseUser.setEmail(createUserDto.getEmail());
-        databaseUser.setAddress("");
-        User savedUser = userRepository.save(databaseUser);
+        User user = userMapper.toEntity(createUserDto);
+        User savedUser = userRepository.save(user);
 
-        notificationService.createWelcomeNotification(savedUser);
-        notificationService.createEmailVerificationNotification(savedUser);
+        applicationEventPublisher.publishEvent(
+                new UserRegisteredEvent(savedUser));
 
         String accessToken = JwtUtil.generateToken(savedUser.getUsername(),savedUser.getRole());
         String refreshToken = JwtUtil.generateRefreshToken(savedUser.getUsername());
 
-        return new RegisterUserResponseDto.RegisterUserResponseDtoBuilder()
-                .user(new UserDetailsDto.UserDtoBuilder(
-                        savedUser.getId(),
-                        savedUser.getUsername(),
-                        savedUser.getRole())
-                                .email(savedUser.getEmail())
-                                .emailVerified(savedUser.getIsEmailVerified())
-                                .address(savedUser.getAddress())
-                                .build())
-                .tokens(new TokenDto.TokenDtoBuilder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build())
-                .meta(new MetaDto.MetaDtoBuilder()
-                        .environment(environment)
-                        .build())
-                .build();
+        return userMapper.toRegisterUserResponse(
+                savedUser,
+                accessToken,
+                refreshToken,
+                environment);
     }
 
     public RolesDto adminRegisterUser(Roles role){

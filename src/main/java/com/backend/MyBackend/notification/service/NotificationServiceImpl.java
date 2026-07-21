@@ -10,6 +10,7 @@ import com.backend.MyBackend.notification.enums.NotificationCode;
 import com.backend.MyBackend.notification.enums.NotificationPriority;
 import com.backend.MyBackend.notification.enums.NotificationType;
 import com.backend.MyBackend.notification.repository.NotificationRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,5 +130,22 @@ public class NotificationServiceImpl implements NotificationService{
         }
 
         log.debug("Default notification check completed for userId={}",user.getId());
+    }
+
+    @Override
+    public void markEmailVerificationNotificationAsRead(User user){
+
+        Notification notification = notificationRepository.findByUserAndCode(
+                user,
+                NotificationCode.EMAIL_VERIFICATION);
+
+        if (notification == null){
+            return;
+        }
+
+        notification.setIsRead(true);
+        notification.setReadAt(LocalDateTime.now());
+
+        notificationRepository.save(notification);
     }
 }

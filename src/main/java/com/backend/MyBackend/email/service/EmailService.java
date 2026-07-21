@@ -2,12 +2,18 @@ package com.backend.MyBackend.email.service;
 
 import com.backend.MyBackend.account.entity.User;
 import com.backend.MyBackend.account.repository.UserRepository;
+import com.backend.MyBackend.common.constants.Constants;
+import com.backend.MyBackend.email.constants.EmailConstants;
 import com.backend.MyBackend.email.events.VerificationEmailEvent;
+import com.backend.MyBackend.email.exceptions.EmailAlreadyVerifiedException;
 import com.backend.MyBackend.email.exceptions.EmailNotFoundException;
+import com.backend.MyBackend.email.exceptions.InvalidVerificationTokenException;
+import com.backend.MyBackend.email.exceptions.VerificationTokenExpiredException;
 import com.backend.MyBackend.exception.UserNotFoundException;
+import com.backend.MyBackend.notification.repository.NotificationRepository;
+import com.backend.MyBackend.notification.service.NotificationService;
 import java.sql.Timestamp;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.Instant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -25,61 +31,57 @@ public class EmailService{
     private String environment;
 
     private final UserRepository userRepository;
-    private final EmailProvider emailProvider;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final NotificationService notificationService;
 
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
-    public EmailService(UserRepository userRepository,EmailProvider emailProvider){
+    public EmailService(UserRepository userRepository,
+            ApplicationEventPublisher applicationEventPublisher,NotificationRepository notificationRepository,
+            NotificationService notificationService,NotificationService notificationService1){
         this.userRepository = userRepository;
-        this.emailProvider = emailProvider;
+        this.applicationEventPublisher = applicationEventPublisher;
+
+        this.notificationService = notificationService1;
     }
 
     public void sendVerificationEmail(Long id){
-        System.out.println("UserId:: " + id);
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(Constants.USER_NOT_FOUND));
 
         if (user.getEmail() == null || user.getEmail().isBlank()){
-            throw new EmailNotFoundException("User email is empty");
+            throw new EmailNotFoundException(Constants.USER_EMAIL_EMPTY);
         }
-        System.out.println(user.getEmail());
-        String token = UUID.randomUUID().toString();
-
-        user.setEmailVerificationToken(token);
-        user.setEmailVerificationExpiry(
-                new Timestamp(
-                        System.currentTimeMillis() + 24 * 60 * 60 * 1000));
+        user.generateVerificationToken();
 
         userRepository.save(user);
         applicationEventPublisher.publishEvent(
                 new VerificationEmailEvent(
                         user.getEmail(),
-                        token));
+                        user.getEmailVerificationToken()));
     }
 
     public void verifyEmail(String token){
         User user = userRepository.findByEmailVerificationToken(token);
 
         if (user == null){
-            throw new RuntimeException("Invalid verification token");
+            throw new InvalidVerificationTokenException(
+                    EmailConstants.INVALID_VERIFICATION_TOKEN);
         }
 
         if (user.getIsEmailVerified()){
-            throw new RuntimeException("Email already verified");
+            throw new EmailAlreadyVerifiedException(
+                    EmailConstants.EMAIL_ALREADY_VERIFIED);
         }
 
         if (user.getEmailVerificationExpiry() != null &&
                 user.getEmailVerificationExpiry()
-                        .before(new Timestamp(System.currentTimeMillis()))){
+                        .before(Timestamp.from(Instant.now()))){
 
-            throw new RuntimeException("Verification link expired");
+            throw new VerificationTokenExpiredException(
+                    EmailConstants.VERIFICATION_TOKEN_EXPIRED);
         }
 
-        user.setEmailVerified(true);
-        user.setEmailVerificationToken(null);
-        user.setEmailVerificationExpiry(null);
-
+        user.verifyEmail();
         userRepository.save(user);
+        notificationService.markEmailVerificationNotificationAsRead(user);
     }
 }
