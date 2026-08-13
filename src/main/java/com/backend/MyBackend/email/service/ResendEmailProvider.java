@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Profile({"prod","preprod"})
 public class ResendEmailProvider implements EmailProvider{
 
+    private final static String from = "Acme <onboarding@resend.dev>";
+
     @Value("${app.resend.api}")
     private String apiKey;
 
@@ -17,7 +19,7 @@ public class ResendEmailProvider implements EmailProvider{
         Resend resend = new Resend(apiKey);
 
         CreateEmailOptions options = CreateEmailOptions.builder()
-                .from("Acme <onboarding@resend.dev>")
+                .from(from)
                 .to(to)
                 .subject(subject)
                 .html(html)
