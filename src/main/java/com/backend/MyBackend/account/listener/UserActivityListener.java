@@ -33,14 +33,22 @@ public class UserActivityListener{
     @EventListener
     public void handleInactiveUsersEvent(InactiveUsersEvent event){
         List<Long> idsToDeactivate = event.getUserIds();
+        log.info("==== [INACTIVE USER EVENT HANDLER START] ====");
 
         if (idsToDeactivate == null || idsToDeactivate.isEmpty()){
-            log.info("No users to deactivate.");
+            log.info("No users received for deactivation.");
+            log.info("==== [INACTIVE USER EVENT HANDLER END] ====");
             return;
         }
 
-        log.info("Deactivating users (ids): {}",idsToDeactivate);
+        log.info(
+                "Received InactiveUsersEvent for {} users.",
+                idsToDeactivate.size());
+
         int updated = userRepository.deactivateUsersByIds(idsToDeactivate);
-        log.info("Deactivated {} users.",updated);
+        log.info(
+                "Successfully deactivated {} users.",
+                updated);
+        log.info("==== [INACTIVE USER EVENT HANDLER END] ====");
     }
 }

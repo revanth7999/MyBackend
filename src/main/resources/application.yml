@@ -90,3 +90,8 @@ server:
     key-store-password: ${KEYSTORE_PASSWORD}
     key-store-type: PKCS12
     key-alias: mycert
+
+user:
+  inactivity:
+    days: 90
+    enabled: true

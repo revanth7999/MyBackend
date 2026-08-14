@@ -1,8 +1,8 @@
 package com.backend.MyBackend.test;
 
-import com.backend.MyBackend.feignClient.NotificationFeignClient;
-import com.backend.MyBackend.feignClient.dto.NotificationServiceApiResponse;
 import com.backend.MyBackend.common.dto.ApiResponse;
+import com.backend.MyBackend.feignClient.dto.NotificationServiceApiResponse;
+import com.backend.MyBackend.feignClient.service.NotificationFeignClient;
 import com.backend.MyBackend.kafka.KafkaProducer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,15 +13,14 @@ public class TestController{
     private final KafkaProducer kafkaProducer;
     private final NotificationFeignClient notificationFeignClient;
 
-    public TestController(KafkaProducer kafkaProducer, NotificationFeignClient notificationFeignClient){
+    public TestController(KafkaProducer kafkaProducer,NotificationFeignClient notificationFeignClient){
         this.kafkaProducer = kafkaProducer;
         this.notificationFeignClient = notificationFeignClient;
     }
 
     @GetMapping("/api/test")
     public ResponseEntity<ApiResponse> test(){
-        NotificationServiceApiResponse response =
-                notificationFeignClient.getTest();
+        NotificationServiceApiResponse response = notificationFeignClient.getTest();
 
         return ResponseEntity.ok(
                 new ApiResponse(

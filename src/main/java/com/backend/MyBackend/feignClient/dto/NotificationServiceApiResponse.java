@@ -5,15 +5,15 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class NotificationServiceApiResponse {
+public class NotificationServiceApiResponse{
 
     private String message;
     private Object data;
 
-    public NotificationServiceApiResponse() {
+    public NotificationServiceApiResponse(){
     }
 
-    public NotificationServiceApiResponse(String message, Object data) {
+    public NotificationServiceApiResponse(String message,Object data){
         this.message = message;
         this.data = data;
     }

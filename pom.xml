@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.3</version>
+        <version>3.5.16</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -47,7 +47,7 @@
         <spotless.config.dir>src/main/java/**/*.java</spotless.config.dir>
         <!-- Define the Liquibase properties file location -->
         <liquibase.config.dir>bin/liquibase.properties</liquibase.config.dir>
-        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <spring-cloud.version>2025.0.3</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -59,12 +59,10 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
     <dependencies>
-
-        <!-- SPRING BOOT -->
+        <!-- SPRING BOOT STATER-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -96,19 +94,20 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- SPRING CLOUD -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- MESSAGING -->
         <dependency>
-            <groupId>com.resend</groupId>
-            <artifactId>resend-java</artifactId>
-            <version>4.13.0</version>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
         </dependency>
 
         <!-- DATABASE DRIVERS -->
@@ -150,22 +149,18 @@
             <version>0.11.5</version>
         </dependency>
 
-        <!-- LOGGING -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-
         <!-- RATE LIMITING -->
         <dependency>
             <groupId>com.bucket4j</groupId>
             <artifactId>bucket4j-core</artifactId>
             <version>8.10.1</version>
+        </dependency>
+
+        <!-- EXTERNAL EMAIL SERVICES -->
+        <dependency>
+            <groupId>com.resend</groupId>
+            <artifactId>resend-java</artifactId>
+            <version>4.13.0</version>
         </dependency>
 
         <!-- AI -->
@@ -181,6 +176,13 @@
             <version>0.36.2</version>
         </dependency>
 
+        <!-- API DOCUMENTATION -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.9</version>
+        </dependency>
+
         <!-- UTILITIES -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -194,10 +196,15 @@
             <version>3.0.2</version>
         </dependency>
 
+        <!-- LOGGING -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.8.9</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
 
         <!-- TEST -->
@@ -207,6 +214,16 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.11.0</version>
+        </dependency>
     </dependencies>
 
     <build>
