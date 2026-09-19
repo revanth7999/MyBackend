@@ -13,6 +13,7 @@
     <include file="db/changelog/createtables/006-create-cart-table.xml"/>
     <include file="db/changelog/createtables/007-create-cartItem-table.xml"/>
     <include file="db/changelog/createtables/008-create-notification-table.xml"/>
+    <include file="db/changelog/createtables/009-create-reviews-table.xml"/>
     <!-- INSERTS -->
     <include file="db/changelog/inserts/001-insert-default-admin.xml"/>
     <include file="db/changelog/inserts/002-insert-default-roles.xml"/>

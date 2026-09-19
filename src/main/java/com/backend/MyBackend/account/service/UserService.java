@@ -136,6 +136,10 @@ public class UserService{
         return allRoles;
     }
 
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
     /**
      * Authenticates a user by verifying the username and password. Returns a LoginRequest DTO if successful. Saves a
      * login session with IP address and device information.
